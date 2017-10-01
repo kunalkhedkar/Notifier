@@ -96,7 +96,7 @@
 
 
         <Button
-        android:onClick="registerdone"
+        android:onClick="registerOnClick"
         android:background="@drawable/button_color"
         android:id="@+id/Register"
         android:text="Submit"
