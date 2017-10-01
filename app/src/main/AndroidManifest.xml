@@ -9,8 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".SplashActivity">
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,12 +17,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:theme="@style/MyMaterialTheme"
             android:name=".TeacherNaviActivity"
-            android:label="Notifer" />
-
-        <activity android:name=".LoginActivity">
-            </activity>
+            android:label="Notifer"
+            android:theme="@style/MyMaterialTheme" />
+        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".StudentNaviActivity"
+            android:label="@string/title_activity_student_navi"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".RegisterActivity"></activity>
     </application>
 
 </manifest>

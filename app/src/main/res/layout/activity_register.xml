@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#464140"
+        android:padding="40dp">
+
+
+    <ImageView
+        android:id="@+id/Logo"
+        android:layout_centerHorizontal="true"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:src="@drawable/my_logo"
+        />
+
+    <EditText
+        android:background="@drawable/round_corner_style"
+        android:gravity="center"
+        android:id="@+id/Rname"
+        android:hint="Name"
+        android:layout_width="300dp"
+        android:layout_height="33dp"
+        android:layout_below="@+id/Logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp" />
+
+    <EditText
+        android:background="@drawable/round_corner_style"
+        android:gravity="center"
+        android:id="@+id/Remail"
+        android:hint="Username as Email"
+        android:layout_width="300dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/Rname"
+        android:layout_alignLeft="@+id/Rname"
+        android:layout_alignStart="@+id/Rname" />
+
+
+
+    <EditText
+        android:background="@drawable/round_corner_style"
+        android:gravity="center"
+        android:id="@+id/Rmobile"
+        android:hint="Mobile"
+        android:layout_width="300dp"
+        android:layout_height="33dp"
+        android:layout_below="@+id/Remail"
+        android:layout_alignLeft="@+id/Remail"
+        android:layout_alignStart="@+id/Remail"
+        android:layout_marginTop="22dp" />
+
+    <EditText
+        android:background="@drawable/round_corner_style"
+        android:gravity="center"
+        android:id="@+id/Raddres"
+        android:hint="Adress"
+        android:layout_width="300dp"
+        android:layout_height="33dp"
+        android:layout_below="@+id/Rmobile"
+        android:layout_alignLeft="@+id/Rmobile"
+        android:layout_alignStart="@+id/Rmobile"
+        android:layout_marginTop="17dp" />
+
+    <EditText
+        android:background="@drawable/round_corner_style"
+        android:gravity="center"
+        android:id="@+id/Rrole"
+        android:hint="Role spinner"
+        android:layout_width="300dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="21dp"
+        android:layout_below="@+id/Raddres"
+        android:layout_alignLeft="@+id/Raddres"
+        android:layout_alignStart="@+id/Raddres" />
+
+        <EditText
+            android:background="@drawable/round_corner_style"
+            android:gravity="center"
+            android:id="@+id/RrollNumber"
+            android:hint="Roll Number"
+            android:layout_width="300dp"
+            android:layout_height="33dp"
+            android:layout_marginTop="21dp"
+            android:visibility="gone"
+            android:layout_below="@+id/Rrole"
+            android:layout_alignLeft="@+id/Raddres"
+            android:layout_alignStart="@+id/Raddres" />
+
+
+        <Button
+        android:onClick="registerdone"
+        android:background="@drawable/button_color"
+        android:id="@+id/Register"
+        android:text="Submit"
+        android:textColor="#ffffff"
+        android:layout_below="@id/RrollNumber"
+        android:layout_marginTop="25dp"
+        android:textStyle="bold"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" />
+
+
+
+
+
+</RelativeLayout>
+</ScrollView>

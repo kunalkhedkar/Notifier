@@ -21,8 +21,8 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent TeacherNavIntent=new Intent(SplashActivity.this,TeacherNaviActivity.class);
-                startActivity(TeacherNavIntent);
+                Intent StudentNavIntent=new Intent(SplashActivity.this,StudentNaviActivity.class);
+                startActivity(StudentNavIntent);
                 finish();
             }
         },SPALSH_SCREEN_TIME_OUT);
