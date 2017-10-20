@@ -7,4 +7,23 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_student_navi">StudentNaviActivity</string>
+
+
+    <string-array name="class_types">
+        <item>select class</item>
+        <item>---------------------------</item>
+        <item>FYBCS</item>
+        <item>SYBCS</item>
+        <item>TYBCS</item>
+        <item>MCS Part 1</item>
+        <item>MCS Part 2</item>
+    </string-array>
+
+    <string-array name="role_types">
+        <item>select role</item>
+        <item>---------------------------</item>
+        <item>student</item>
+        <item>teacher</item>
+    </string-array>
+
 </resources>
