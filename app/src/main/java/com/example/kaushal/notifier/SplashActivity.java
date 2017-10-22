@@ -21,11 +21,17 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent StudentNavIntent=new Intent(SplashActivity.this,StudentNaviActivity.class);
-                startActivity(StudentNavIntent);
+                Intent HeadNavIntent=new Intent(SplashActivity.this,HeadNaviActivity.class);
+                startActivity(HeadNavIntent);
                 finish();
             }
         },SPALSH_SCREEN_TIME_OUT);
     }
+
+
+
+    // read
+//    SharedPreferences prefs = getSharedPreferences(PREF_FILE_NAME,MODE_PRIVATE);
+//    String length = prefs.getString("length", "deafalut value");
 
 }

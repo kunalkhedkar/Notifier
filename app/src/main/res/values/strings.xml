@@ -25,5 +25,6 @@
         <item>student</item>
         <item>teacher</item>
     </string-array>
+    <string name="title_activity_head_navi">HeadNaviActivity</string>
 
 </resources>

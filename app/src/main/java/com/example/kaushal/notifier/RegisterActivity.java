@@ -1,6 +1,7 @@
 package com.example.kaushal.notifier;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     DatabaseReference STUDENT_REFERENCE;
     DatabaseReference DUMMY_TEACHER_REFERENCE;
+    DatabaseReference USER_REFERENCE;
+    String token="token";
+
 
 
     EditText Rname,Rusername,Rpassword,Rmobile,Radress,RroleNumber;
@@ -58,9 +62,9 @@ public class RegisterActivity extends AppCompatActivity {
         Rrole.setAdapter(adapter_role);
 
         // firebase url
+        USER_REFERENCE=FirebaseDatabase.getInstance().getReference("user");
         STUDENT_REFERENCE= FirebaseDatabase.getInstance().getReference("student");
         DUMMY_TEACHER_REFERENCE=FirebaseDatabase.getInstance().getReference("teacher");
-
 //            String shared_fileName=MyConstant.SHARED_FILE;
 
     }
@@ -75,6 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
         String mobile=Rmobile.getText().toString();
         String address=Radress.getText().toString();
         String RollNumber=RroleNumber.getText().toString();
+
         String classType=Rclass.getSelectedItem().toString();
         String roleType=Rrole.getSelectedItem().toString();
 
@@ -111,22 +116,55 @@ public class RegisterActivity extends AppCompatActivity {
             Rmobile.setError("please enter valid number");
             return;
         }
-        if(!mobile.startsWith("9")){
-            Rmobile.setError("please enter valid number");
-            return;
-        }
-        if(!mobile.startsWith("7")){
-            Rmobile.setError("please enter valid number");
-            return;
-        }
-        if(!mobile.startsWith("8")){
-            Rmobile.setError("please enter valid number");
+//        if(!mobile.startsWith("9")){
+//            Rmobile.setError("please enter valid number");
+//            return;
+//        }
+//        if(!mobile.startsWith("7")){
+//            Rmobile.setError("please enter valid number");
+//            return;
+//        }
+//        if(!mobile.startsWith("8")) {
+//            Rmobile.setError("please enter valid number");
+//            return;
+//        }
+
+
+        if(name.isEmpty())
+        {
+            Rname.setError("Cant be empty");
             return;
         }
 
+        if(username.isEmpty())
+        {
+            Rusername.setError("Can't be empty");
+            return;
+        }
+
+        if(password.isEmpty())
+        {
+            Rpassword.setError("Cant be empty");
+            return;
+         }
+        if(RollNumber.isEmpty())
+        {
+            RroleNumber.setError("Cant be empty");
+            return;
+        }
+        if(mobile.isEmpty())
+        {
+            Rmobile.setError("Cant be empty");
+            return;
+        }
+        if(address.isEmpty()) {
+            Radress.setError("Cant be empty");
+            return;
+        }
 
 
         if(roleType.equals("student")) {
+
             String ID = STUDENT_REFERENCE.push().getKey();
             Log.d("TAG", "registerOnClick:" + ID);
             Student s1 = new Student(ID, name, username, password, RollNumber, mobile, address, roleType, classType);
@@ -155,6 +193,17 @@ public class RegisterActivity extends AppCompatActivity {
 
                 }
             });
+
+            acceptUser(ID,username,password,roleType,token);
+            //add to shared
+            SharedPreferences preferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("id",ID);
+            editor.putString("role",roleType);
+            editor.putString("username",username);
+            editor.putBoolean("isLoggedIn",true);
+            editor.apply();
+
         }
         /*
         this.t_ID = t_ID;
@@ -191,6 +240,9 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             });
 
+            acceptUser(t_ID,username,password,roleType,token);
+
+
         }
 
 
@@ -199,6 +251,44 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+
+    public void acceptUser(String u_ID,String username,String password,String role,String token){
+        String ID=USER_REFERENCE.push().getKey();
+        Users uu=new Users(u_ID,username,password,role,token);
+        USER_REFERENCE.child(ID).setValue(uu);
+
+        USER_REFERENCE.child(ID).setValue(uu);
+
+        USER_REFERENCE.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot usersDataSnapshot: dataSnapshot.getChildren()){
+                    Users u1=usersDataSnapshot.getValue(Users.class);
+                    Log.d("TAG",u1.getU_ID()+"\t"+u1.getU_Username()+"\t"+u1.getU_Password()+"\t"+u1.getU_Role()+"\t"+u1.getU_Token());
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+
+
+
+
+
+
+
+
 
 
 // spinner listener -----  https://stackoverflow.com/questions/1337424/android-spinner-get-the-selected-item-change-event
