@@ -98,4 +98,10 @@ public class TeacherNaviActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void viewStudent(MenuItem item) {
+        Intent intent=new Intent(TeacherNaviActivity.this,ViewStudentActivity.class);
+        startActivity(intent);
+
+    }
 }

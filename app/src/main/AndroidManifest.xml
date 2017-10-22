@@ -30,7 +30,8 @@
             android:name=".HeadNaviActivity"
             android:label="@string/title_activity_head_navi"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ViewTeacherActivity"></activity>
+        <activity android:name=".ViewTeacherActivity" />
+        <activity android:name=".ViewStudentActivity"></activity>
     </application>
 
 </manifest>

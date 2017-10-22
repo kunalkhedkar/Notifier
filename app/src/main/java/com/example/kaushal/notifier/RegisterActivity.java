@@ -67,6 +67,10 @@ public class RegisterActivity extends AppCompatActivity {
         DUMMY_TEACHER_REFERENCE=FirebaseDatabase.getInstance().getReference("teacher");
 //            String shared_fileName=MyConstant.SHARED_FILE;
 
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
+
     }
 
     public void registerOnClick(View view) {
@@ -215,7 +219,7 @@ public class RegisterActivity extends AppCompatActivity {
         this.t_Address = t_Address;
     }
         */
-
+                    // TEACHER
         else{
             String t_ID=DUMMY_TEACHER_REFERENCE.push().getKey();
             Log.d("TAG", "registerOnClick:" + t_ID);
@@ -239,10 +243,16 @@ public class RegisterActivity extends AppCompatActivity {
 
                 }
             });
-
+           // Toast.makeText(this, ""+roleType, Toast.LENGTH_SHORT).show();
             acceptUser(t_ID,username,password,roleType,token);
 
-
+            SharedPreferences preferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("id",t_ID);
+            editor.putString("role",roleType);
+            editor.putString("username",username);
+            editor.putBoolean("isLoggedIn",true);
+            editor.apply();
         }
 
 

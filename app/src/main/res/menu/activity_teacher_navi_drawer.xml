@@ -14,10 +14,20 @@
             android:id="@+id/nav_all_schedule"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="All schedule" />
+
+        <item
+            android:onClick="viewStudent"
+            android:id="@+id/nav_view_Student"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="View Student" />
+
+
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_menu_manage"
             android:title="Logout" />
+
+
 
 
 
