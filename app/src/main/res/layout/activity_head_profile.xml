@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="40dp"
+    tools:context="com.example.kaushal.notifier.HeadProfileActivity">
+  <EditText
+      android:focusable="false"
+      android:gravity="center"
+      android:layout_marginTop="15dp"
+      android:id="@+id/headUsername"
+      android:hint="Username"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
+  <EditText
+      android:layout_marginTop="15dp"
+      android:layout_below="@id/headUsername"
+      android:gravity="center"
+      android:id="@+id/headName"
+      android:hint="Full Name"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
+
+    <EditText
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/headName"
+        android:id="@+id/InstituteName"
+        android:hint="InstituteName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:textColor="#ffffff"
+        android:background="@drawable/button_color"
+        android:onClick="save"
+        android:id="@+id/save"
+        android:text="save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/InstituteName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="36dp" />
+
+    <Button
+        android:textColor="#ffffff"
+        android:background="@drawable/button_color"
+        android:onClick="changePassword"
+        android:text="change password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_alignBaseline="@+id/save"
+        android:layout_alignBottom="@+id/save"
+        android:layout_toRightOf="@+id/save"
+        android:layout_toEndOf="@+id/save" />
+
+</RelativeLayout>

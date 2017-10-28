@@ -1,7 +1,13 @@
 package com.example.kaushal.notifier;
 
+import android.preference.DialogPreference;
 import android.support.v7.app.AppCompatActivity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -39,7 +45,7 @@ public class ViewStudentActivity extends AppCompatActivity {
         adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list);
         studentList.setAdapter(adapter);
 
-
+        //studentList.setOnItemLongClickListener(this);
     }
 
     public void buildStudentData(){
@@ -63,13 +69,36 @@ public class ViewStudentActivity extends AppCompatActivity {
         });
     }
 
-
-
-
-
-
-
-
-
-
+//
+//    @Override
+//    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//        //return false;
+//
+//        final String delNum=list.get(i).toString();
+//
+//        DialogInterface.OnClickListener dialogClickListener=new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int which) {
+//                switch (which){
+//                    case DialogInterface.BUTTON_POSITIVE:
+//
+//                        adapter.notifyDataSetChanged();
+//                        break;
+//
+//
+//                    case DialogInterface.BUTTON_NEGATIVE:
+//                        //No button clicked
+//                        break;
+//
+//                }
+//
+//            }
+//        };
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(ViewStudentActivity.this);
+//        builder.setMessage("Are you want to accept Shcedule "+delNum+" ?").setPositiveButton("Yes", dialogClickListener)
+//                .setNegativeButton("No", dialogClickListener).show();
+//
+//        return true;
+//    }
 }

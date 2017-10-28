@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -24,35 +25,53 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 String s1;
 
-                SharedPreferences preferences=getSharedPreferences(MyConstant.SHARED_FILE,MODE_PRIVATE);
-                s1=preferences.getString("role",null);
+                SharedPreferences preferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
+                s1 = preferences.getString("role", null);
+                boolean logInFlag = preferences.getBoolean("isLoggedIn", false);
+                Log.d("TAG", "login status " + logInFlag);
 
-                 if(s1.equalsIgnoreCase("student")){
-                   Intent intent=new Intent(SplashActivity.this,StudentNaviActivity.class);
-                    startActivity(intent);
-                     finish();
-                }else   if(s1.equalsIgnoreCase("teacher")){
-                     Intent TeacherNavIntent=new Intent(SplashActivity.this,TeacherNaviActivity.class);
-                     startActivity(TeacherNavIntent);
-                     finish();
+                if (s1.equalsIgnoreCase("student")) {
+
+                    if (logInFlag == true) {
+                        Intent intent = new Intent(SplashActivity.this, StudentNaviActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                } else if (s1.equalsIgnoreCase("teacher")) {
+
+                    if (logInFlag == true) {
+                        Intent intent = new Intent(SplashActivity.this, TeacherNaviActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
                 // head
-                if(s1.equalsIgnoreCase("head")){
-                    Intent HeadNavIntent=new Intent(SplashActivity.this ,HeadNaviActivity.class);
-                    startActivity(HeadNavIntent);
-                    finish();
+                else if (s1.equalsIgnoreCase("head")) {
 
+                    if (logInFlag == true) {
+                        Intent intent = new Intent(SplashActivity.this, HeadNaviActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                    } else {
+                        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
 
-                Intent intent=new Intent(SplashActivity.this,TeacherNaviActivity.class);
-                startActivity(intent);
-                finish();
-
-
             }
-        },SPALSH_SCREEN_TIME_OUT);
+        }, SPALSH_SCREEN_TIME_OUT);
     }
-
 
 
     // read

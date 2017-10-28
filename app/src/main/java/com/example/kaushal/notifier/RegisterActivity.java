@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -52,7 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         // role and class spinner
         String classs[]=getResources().getStringArray(R.array.class_types);
-        String role[]=getResources().getStringArray(R.array.role_types);
+        final String role[]=getResources().getStringArray(R.array.role_types);
 
         //role and class adapter
 
@@ -70,6 +71,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+
+
+        // add listerner to spinner for visibility
+
 
     }
 
@@ -145,17 +150,17 @@ public class RegisterActivity extends AppCompatActivity {
             Rusername.setError("Can't be empty");
             return;
         }
+        if(!username.contains("@"))
+        {
+            Rusername.setError("Not correct");
+            return;
+        }
 
         if(password.isEmpty())
         {
             Rpassword.setError("Cant be empty");
             return;
          }
-        if(RollNumber.isEmpty())
-        {
-            RroleNumber.setError("Cant be empty");
-            return;
-        }
         if(mobile.isEmpty())
         {
             Rmobile.setError("Cant be empty");
@@ -169,6 +174,21 @@ public class RegisterActivity extends AppCompatActivity {
 
         if(roleType.equals("student")) {
 
+            if(roleType.equals("select role")){
+                Toast.makeText(this, "please Select Role", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(RollNumber.isEmpty())
+            {
+                RroleNumber.setError("Cant be empty");
+                return;
+            }
+            if(classType.equals("select class")){
+                Toast.makeText(this, "please Select class", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+
             String ID = STUDENT_REFERENCE.push().getKey();
             Log.d("TAG", "registerOnClick:" + ID);
             Student s1 = new Student(ID, name, username, password, RollNumber, mobile, address, roleType, classType);
@@ -176,6 +196,7 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     Toast.makeText(RegisterActivity.this, "Register Sucessfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Please Login", Toast.LENGTH_SHORT).show();
                 }
 
             });
@@ -185,6 +206,7 @@ public class RegisterActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot userDataSnapshot : dataSnapshot.getChildren()) {
                         Student ss = userDataSnapshot.getValue(Student.class);
+                        Toast.makeText(RegisterActivity.this, "Registration Sucessfully", Toast.LENGTH_SHORT).show();
 
                         Log.d("TAG", ss.getS_Name() + "\t" + ss.gets_Username() + "\t" + ss.getS_Address() + "\t" + ss.getS_Password() + "\t" + ss.getS_Mobile() + "\t" + ss.getS_Role() + "\t" + ss.getS_Class() + "\t" + ss.gets_RollNumber());
 
@@ -206,7 +228,12 @@ public class RegisterActivity extends AppCompatActivity {
             editor.putString("role",roleType);
             editor.putString("username",username);
             editor.putBoolean("isLoggedIn",true);
+            //editor.putString("name",name);
             editor.apply();
+
+            Intent intent=new Intent(this,LoginActivity.class);
+            startActivity(intent);
+
 
         }
         /*
@@ -221,10 +248,14 @@ public class RegisterActivity extends AppCompatActivity {
         */
                     // TEACHER
         else{
+
+
             String t_ID=DUMMY_TEACHER_REFERENCE.push().getKey();
             Log.d("TAG", "registerOnClick:" + t_ID);
             Teacher tt=new Teacher(t_ID,name,username,password,roleType,mobile,address);
             DUMMY_TEACHER_REFERENCE.child(t_ID).setValue(tt);
+            Toast.makeText(this, "Registration Sucessfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please login", Toast.LENGTH_SHORT).show();
 
             DUMMY_TEACHER_REFERENCE.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -244,7 +275,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             });
            // Toast.makeText(this, ""+roleType, Toast.LENGTH_SHORT).show();
-            acceptUser(t_ID,username,password,roleType,token);
+//            acceptUser(t_ID,username,password,roleType,token);
 
             SharedPreferences preferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
@@ -252,9 +283,10 @@ public class RegisterActivity extends AppCompatActivity {
             editor.putString("role",roleType);
             editor.putString("username",username);
             editor.putBoolean("isLoggedIn",true);
+            //editor.putString("name",name);
             editor.apply();
-        }
 
+        }
 
 
         Intent intent=new Intent(this,LoginActivity.class);
@@ -268,7 +300,7 @@ public class RegisterActivity extends AppCompatActivity {
         Users uu=new Users(u_ID,username,password,role,token);
         USER_REFERENCE.child(ID).setValue(uu);
 
-        USER_REFERENCE.child(ID).setValue(uu);
+//        USER_REFERENCE.child(ID).setValue(uu);
 
         USER_REFERENCE.addValueEventListener(new ValueEventListener() {
             @Override
@@ -287,12 +319,16 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
+//        SharedPreferences preferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
+//        SharedPreferences.Editor editor = preferences.edit();
+//        editor.putString("id",ID);
+//        editor.putString("role",roleType);
+//        editor.putString("username",username);
+//        editor.putBoolean("isLoggedIn",true);
+//        editor.apply();
 
 
     }
-
-
-
 
 
 

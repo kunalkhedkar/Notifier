@@ -22,4 +22,6 @@
         app:headerLayout="@layout/nav_header_student_navi"
         app:menu="@menu/activity_student_navi_drawer" />
 
+
+
 </android.support.v4.widget.DrawerLayout>

@@ -1,9 +1,11 @@
 package com.example.kaushal.notifier;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,18 +15,41 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class StudentNaviActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    TextView s_username,s_role;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_student_navi);
+
+       setContentView(R.layout.activity_student_navi);
+       // setContentView(R.layout.nav_header_student_navi);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+
+
+       s_username= (TextView) findViewById(R.id.username);
+        s_role= (TextView) findViewById(R.id.role);
+
+
+
+        SharedPreferences preferences=getSharedPreferences(MyConstant.SHARED_FILE,MODE_PRIVATE);
+        String student_username=preferences.getString("username",null);
+        String student_role=preferences.getString("role",null);
+        Log.d("TAG", "onCreate:"+student_username+"\n"+student_role);
+
+        //s_username.setText(student_username);
+        //s_role.setText(student_role);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +119,10 @@ public class StudentNaviActivity extends AppCompatActivity
         }
 
         else if (id == R.id.nav_logout_student) {
+            SharedPreferences sharedPreferences=getSharedPreferences(MyConstant.SHARED_FILE,MODE_PRIVATE);
+            SharedPreferences.Editor editor=sharedPreferences.edit();
+            editor.putBoolean("isLoggedIn",false);
+            editor.commit();
             Intent loginIntent = new Intent(this, LoginActivity.class);
             startActivity(loginIntent);
         }
@@ -126,5 +155,11 @@ public class StudentNaviActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void viewMainSchedule(MenuItem item) {
+        Intent intent=new Intent(StudentNaviActivity.this,ViewMainScheduleActivity.class);
+        startActivity(intent);
+
     }
 }

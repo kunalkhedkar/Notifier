@@ -3,13 +3,27 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:onClick="showProfile"
             android:id="@+id/nav_profile_head"
             android:icon="@drawable/profile_2"
             android:title="Profile" />
+
         <item android:onClick="viewTeacher"
             android:id="@+id/nav_view_schedule_teacher"
             android:icon="@drawable/ic_scheduler"
             android:title="View" />
+
+        <item
+            android:id="@+id/nav_view_schedule_request"
+            android:icon="@drawable/ic_event_note_black_24dp"
+            android:title="shedule request"
+            android:onClick="schedule_request"/>
+
+        <item android:onClick="logout"
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_power_settings_new_black_24dp"
+        android:title="Logout" />
+
 
     </group>
 

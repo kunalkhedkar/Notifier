@@ -7,8 +7,9 @@
             android:icon="@drawable/profile_2"
             android:title="Profile" />
         <item
+            android:onClick="viewMainSchedule"
             android:id="@+id/nav_view_schedule_student"
-            android:icon="@drawable/ic_scheduler"
+            android:icon="@drawable/ic_visibility_black_24dp"
             android:title="View Schedule" />
         <item
             android:id="@+id/nav_query"
@@ -16,7 +17,7 @@
             android:title="Send Query Report" />
         <item
             android:id="@+id/nav_logout_student"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_power_settings_new_black_24dp"
             android:title="Logout" />
     </group>
 

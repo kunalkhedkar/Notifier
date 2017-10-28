@@ -4,7 +4,7 @@ package com.example.kaushal.notifier;
  * Created by kaushal on 20/10/2017.
  */
 
-public class Teacher {
+public class Teacher{
     public String t_ID;
     public String t_Name;
     public String t_Username;
