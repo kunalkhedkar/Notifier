@@ -43,7 +43,6 @@ public class LoginActivity extends AppCompatActivity {
         //editor.putString("username",null);
 
 
-
         //is login shared but not understand
 //
 //       SharedPreferences preferences=getSharedPreferences(MyConstant.SHARED_FILE,MODE_PRIVATE);
@@ -70,73 +69,112 @@ public class LoginActivity extends AppCompatActivity {
         final String User = user.getText().toString();
         final String Pass = pass.getText().toString();
 
+        if (!User.isEmpty() && !Pass.isEmpty()) {
 
-        USER_REFEENCE.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot userDataSnapshot : dataSnapshot.getChildren()) {
-                    Users uu = userDataSnapshot.getValue(Users.class);
-                    user1 = uu.getU_Username().toString();
-                    pass1 = uu.getU_Password().toString();
-                    role = uu.getU_Role().toString();
-                    String ID=uu.getU_ID();
+            USER_REFEENCE.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot userDataSnapshot : dataSnapshot.getChildren()) {
+                        Users uu = userDataSnapshot.getValue(Users.class);
+                        user1 = uu.getU_Username().toString();
+                        pass1 = uu.getU_Password().toString();
+                        role = uu.getU_Role().toString();
+                        String ID = uu.getU_ID();
 
 
-
-
-                    if (User.equalsIgnoreCase(user1) && Pass.equalsIgnoreCase(pass1)) {
-                        SharedPreferences sharedPreferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        if (User.equalsIgnoreCase(user1) && Pass.equalsIgnoreCase(pass1)) {
+                            SharedPreferences sharedPreferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
 //                        String id=sharedPreferences.getString("id",null);
-                        //Log.d("TAG", "SharedID:"+ID);
+                            //Log.d("TAG", "SharedID:"+ID);
 
-                        editor.putBoolean("isLoggedIn", true);
-                        // add islogged value to shared editor
-
-                        if (role.equalsIgnoreCase("student")) {
                             editor.putBoolean("isLoggedIn", true);
-                            editor.putString("role","student");
-                            editor.putString("username",user1);
-                            editor.putString("id",ID);
-                            editor.commit();
-                            flag = true;
-                            Intent intent = new Intent(LoginActivity.this, StudentNaviActivity.class);
-                            startActivity(intent);
-                            break;
-                        } else if (role.equalsIgnoreCase("teacher")) {
-                            editor.putBoolean("isLoggedIn", true);
-                            editor.putString("role","teacher");
-                            editor.putString("username",user1);
-                            editor.putString("id",ID);
-                            editor.commit();
-                            flag = true;
-                            Intent intent = new Intent(LoginActivity.this, TeacherNaviActivity.class);
-                            startActivity(intent);
-                            break;
+                            // add islogged value to shared editor
 
-                        } else if (role.equalsIgnoreCase("head")) {
-                            editor.putBoolean("isLoggedIn", true);
-                            editor.putString("role","head");
-                            editor.putString("username",user1);
-                            editor.putString("id",ID);
-                            editor.commit();
-                            flag = true;
-                            Intent intent = new Intent(LoginActivity.this, HeadNaviActivity.class);
-                            startActivity(intent);
-                            break;
+                            if (role.equalsIgnoreCase("student")) {
+                                editor.putBoolean("isLoggedIn", true);
+                                editor.putString("role", "student");
+                                editor.putString("username", user1);
+                                editor.putString("id", ID);
+                                editor.commit();
+                                flag = true;
+                                Intent intent = new Intent(LoginActivity.this, StudentNaviActivity.class);
+                                startActivity(intent);
+                                break;
+                            } else if (role.equalsIgnoreCase("teacher")) {
+                                editor.putBoolean("isLoggedIn", true);
+                                editor.putString("role", "teacher");
+                                editor.putString("username", user1);
+                                editor.putString("id", ID);
+                                editor.commit();
+                                flag = true;
+                                Intent intent = new Intent(LoginActivity.this, TeacherNaviActivity.class);
+                                startActivity(intent);
+                                break;
 
-                        }
-                        ////                        else if(!User.equals(user1) && !Pass.equals(pass1)){
+                            } else if (role.equalsIgnoreCase("head")) {
+                                editor.putBoolean("isLoggedIn", true);
+                                editor.putString("role", "head");
+                                editor.putString("username", user1);
+                                editor.putString("id", ID);
+                                editor.commit();
+                                flag = true;
+                                Intent intent = new Intent(LoginActivity.this, HeadNaviActivity.class);
+                                startActivity(intent);
+                                break;
+
+                            }
+//                        else if(!User.equals(user1) && !Pass.equals(pass1)){
 ////                            user.setError("please check username and password");
 ////                            break;
 //
 //                        }
+                        }
+
+                    }
+                    if (flag == false) {
+                        Log.d("TAG", "onDataChange: fun " + validLogin());
+
+                        if (!validLogin())
+                            user.setError("please check username or password");
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+        }
+        else
+            user.setError("please Check Username or Password");
+    }
+
+    public boolean validLogin() {
+
+//        SharedPreferences pre = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
+//        final String check = pre.getString("username", null);
+//        Log.d("TAG", "validLogin: user "+check);
+        final String[] dbTeacher = new String[1];
+        final String check = user.getText().toString();
+        Log.d("TAG", "validLogin: user " + check);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("teacher");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot userDataSnapshot : dataSnapshot.getChildren()) {
+                    Teacher u1 = userDataSnapshot.getValue(Teacher.class);
+                    sample = u1.getT_Username();
+                    if (check.equals(sample)) {
+                        Toast.makeText(LoginActivity.this, "Login is Not Aproved by head", Toast.LENGTH_SHORT).show();
+                        break;
                     }
 
                 }
-                if (flag == false)
-                    user.setError("please check username or password");
-
+                Log.d("TAG", "validLogin: sample last " + sample);
             }
 
             @Override
@@ -145,32 +183,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        if (check.equals(sample))
+            return true;
 
-    }
-
-    public void validLogin(){
-
-        SharedPreferences pre=getSharedPreferences(MyConstant.SHARED_FILE,MODE_PRIVATE);
-        final String check =pre.getString("username",null);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("user");
-         ref.addValueEventListener(new ValueEventListener() {
-             @Override
-             public void onDataChange(DataSnapshot dataSnapshot) {
-             for(DataSnapshot userDataSnapshot:dataSnapshot.getChildren()){
-                 Users u1=userDataSnapshot.getValue(Users.class);
-                 sample=u1.getU_Username();
-                 if(!check.equals(sample)){
-                     Toast.makeText(LoginActivity.this, "Login is Not Aproved by head", Toast.LENGTH_SHORT).show();
-                     return;
-                 }
-
-             }
-             }
-
-             @Override
-             public void onCancelled(DatabaseError databaseError) {
-
-             }
-         });
+        return false;
     }
 }

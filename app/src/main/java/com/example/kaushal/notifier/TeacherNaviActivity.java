@@ -58,6 +58,9 @@ public class TeacherNaviActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+
     }
 
     @Override
@@ -66,7 +69,7 @@ public class TeacherNaviActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
         }
     }
 
@@ -108,6 +111,10 @@ public class TeacherNaviActivity extends AppCompatActivity
             SharedPreferences sharedPreferences=getSharedPreferences(MyConstant.SHARED_FILE,MODE_PRIVATE);
             SharedPreferences.Editor editor=sharedPreferences.edit();
             editor.putBoolean("isLoggedIn",false);
+            editor.remove("role");
+            editor.remove("id");
+            editor.remove("token");
+            editor.remove("username");
             editor.commit();
             Intent loginIntent = new Intent(this, LoginActivity.class);
             startActivity(loginIntent);
@@ -171,5 +178,6 @@ public class TeacherNaviActivity extends AppCompatActivity
 //            }
 //        });
 //    }
+
 
 }

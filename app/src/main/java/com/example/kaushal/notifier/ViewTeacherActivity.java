@@ -153,9 +153,5 @@ public class ViewTeacherActivity extends AppCompatActivity implements AdapterVie
             }
         });
 
-
-
-
-
     }
 }

@@ -120,11 +120,6 @@ public class RegisterActivity extends AppCompatActivity {
 //            return;
 //        }
 
-        if(mobile.length()!=10)
-        {
-            Rmobile.setError("please enter valid number");
-            return;
-        }
 //        if(!mobile.startsWith("9")){
 //            Rmobile.setError("please enter valid number");
 //            return;
@@ -156,11 +151,17 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        if(password.isEmpty())
+        if(password.isEmpty() )
         {
             Rpassword.setError("Cant be empty");
             return;
          }
+        if(mobile.length()!=10 )
+        {
+            Rmobile.setError("please enter valid number");
+            return;
+        }
+
         if(mobile.isEmpty())
         {
             Rmobile.setError("Cant be empty");
@@ -222,17 +223,17 @@ public class RegisterActivity extends AppCompatActivity {
 
             acceptUser(ID,username,password,roleType,token);
             //add to shared
-            SharedPreferences preferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("id",ID);
-            editor.putString("role",roleType);
-            editor.putString("username",username);
-            editor.putBoolean("isLoggedIn",true);
-            //editor.putString("name",name);
-            editor.apply();
-
-            Intent intent=new Intent(this,LoginActivity.class);
-            startActivity(intent);
+//            SharedPreferences preferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
+//            SharedPreferences.Editor editor = preferences.edit();
+//            editor.putString("id",ID);
+//            editor.putString("role",roleType);
+//            editor.putString("username",username);
+//            editor.putBoolean("isLoggedIn",true);
+//            //editor.putString("name",name);
+//            editor.apply();
+//
+//            Intent intent=new Intent(this,LoginActivity.class);
+//            startActivity(intent);
 
 
         }
@@ -255,7 +256,6 @@ public class RegisterActivity extends AppCompatActivity {
             Teacher tt=new Teacher(t_ID,name,username,password,roleType,mobile,address);
             DUMMY_TEACHER_REFERENCE.child(t_ID).setValue(tt);
             Toast.makeText(this, "Registration Sucessfully", Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "Please login", Toast.LENGTH_SHORT).show();
 
             DUMMY_TEACHER_REFERENCE.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -277,17 +277,18 @@ public class RegisterActivity extends AppCompatActivity {
            // Toast.makeText(this, ""+roleType, Toast.LENGTH_SHORT).show();
 //            acceptUser(t_ID,username,password,roleType,token);
 
-            SharedPreferences preferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("id",t_ID);
-            editor.putString("role",roleType);
-            editor.putString("username",username);
-            editor.putBoolean("isLoggedIn",true);
-            //editor.putString("name",name);
-            editor.apply();
+
 
         }
 
+        SharedPreferences preferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove("id");
+        editor.remove("role");
+        editor.remove("username");
+        editor.remove("isLoggedIn");
+        //editor.putString("name",name);
+        editor.commit();
 
         Intent intent=new Intent(this,LoginActivity.class);
         startActivity(intent);
