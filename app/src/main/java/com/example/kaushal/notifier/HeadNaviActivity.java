@@ -66,7 +66,7 @@ public class HeadNaviActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
         }
     }
 
@@ -129,6 +129,7 @@ public class HeadNaviActivity extends AppCompatActivity
         SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.putBoolean("isLoggedIn",false);
         editor.commit();
+        UnSubscribeTopic.unSubscribe(HeadNaviActivity.this);
         Intent loginIntent = new Intent(this, LoginActivity.class);
         startActivity(loginIntent);
     }

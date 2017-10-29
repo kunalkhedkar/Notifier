@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -28,6 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
     DatabaseReference DUMMY_TEACHER_REFERENCE;
     DatabaseReference USER_REFERENCE;
     String token="token";
+    String tid;
 
 
 
@@ -83,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
             //All value converted into string
 
         String name=Rname.getText().toString();
-        String username=Rusername.getText().toString();
+        final String username=Rusername.getText().toString();
         String password=Rpassword.getText().toString();
         String mobile=Rmobile.getText().toString();
         String address=Radress.getText().toString();
@@ -190,37 +192,37 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
 
-            String ID = STUDENT_REFERENCE.push().getKey();
+            final String ID = STUDENT_REFERENCE.push().getKey();
             Log.d("TAG", "registerOnClick:" + ID);
             Student s1 = new Student(ID, name, username, password, RollNumber, mobile, address, roleType, classType);
             STUDENT_REFERENCE.child(ID).setValue(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     Toast.makeText(RegisterActivity.this, "Register Sucessfully", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(RegisterActivity.this, "Please Login", Toast.LENGTH_SHORT).show();
+                    FirebaseMessaging.getInstance().subscribeToTopic(ID);// Toast.makeText(RegisterActivity.this, "Please Login", Toast.LENGTH_SHORT).show();
                 }
 
             });
             //read
-            STUDENT_REFERENCE.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot userDataSnapshot : dataSnapshot.getChildren()) {
-                        Student ss = userDataSnapshot.getValue(Student.class);
-                        Toast.makeText(RegisterActivity.this, "Registration Sucessfully", Toast.LENGTH_SHORT).show();
+//            STUDENT_REFERENCE.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    for (DataSnapshot userDataSnapshot : dataSnapshot.getChildren()) {
+//                        Student ss = userDataSnapshot.getValue(Student.class);
+//                        Toast.makeText(RegisterActivity.this, "Registration Sucessfully", Toast.LENGTH_SHORT).show();
+//
+//                        Log.d("TAG", ss.getS_Name() + "\t" + ss.gets_Username() + "\t" + ss.getS_Address() + "\t" + ss.getS_Password() + "\t" + ss.getS_Mobile() + "\t" + ss.getS_Role() + "\t" + ss.getS_Class() + "\t" + ss.gets_RollNumber());
+//
+//                    }
 
-                        Log.d("TAG", ss.getS_Name() + "\t" + ss.gets_Username() + "\t" + ss.getS_Address() + "\t" + ss.getS_Password() + "\t" + ss.getS_Mobile() + "\t" + ss.getS_Role() + "\t" + ss.getS_Class() + "\t" + ss.gets_RollNumber());
-
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+//            });
+//
             acceptUser(ID,username,password,roleType,token);
             //add to shared
 //            SharedPreferences preferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
@@ -248,34 +250,25 @@ public class RegisterActivity extends AppCompatActivity {
     }
         */
                     // TEACHER
+
         else{
 
 
-            String t_ID=DUMMY_TEACHER_REFERENCE.push().getKey();
+            final String t_ID=DUMMY_TEACHER_REFERENCE.push().getKey();
+            tid=t_ID;
             Log.d("TAG", "registerOnClick:" + t_ID);
             Teacher tt=new Teacher(t_ID,name,username,password,roleType,mobile,address);
-            DUMMY_TEACHER_REFERENCE.child(t_ID).setValue(tt);
-            Toast.makeText(this, "Registration Sucessfully", Toast.LENGTH_SHORT).show();
-
-            DUMMY_TEACHER_REFERENCE.addValueEventListener(new ValueEventListener() {
+            final String title="New Teacher register";
+            final String msg=username+" has been newly register";
+            DUMMY_TEACHER_REFERENCE.child(t_ID).setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-                    for(DataSnapshot usersDataSnapshot:dataSnapshot.getChildren()){
-                        Teacher t1=usersDataSnapshot.getValue(Teacher.class);
-                        Log.d("TAG",t1.getT_Name()+"\t"+t1.getT_Username()+"\t"+t1.getT_Password()+"\t"+t1.getT_Role()+"\t"+t1.getT_Mobile()+"\t"+t1.getT_Address());
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
+                public void onComplete(@NonNull Task<Void> task) {
+                    Toast.makeText(RegisterActivity.this, "Registration Sucessfully", Toast.LENGTH_SHORT).show();
+                    FirebaseMessaging.getInstance().subscribeToTopic(t_ID);
+                    CreateNotification createNotification=new CreateNotification(RegisterActivity.this);
+                    createNotification.sendNotificationTopic(title,msg,"head");
                 }
             });
-           // Toast.makeText(this, ""+roleType, Toast.LENGTH_SHORT).show();
-//            acceptUser(t_ID,username,password,roleType,token);
 
 
 
@@ -291,7 +284,9 @@ public class RegisterActivity extends AppCompatActivity {
         editor.commit();
 
         Intent intent=new Intent(this,LoginActivity.class);
+        intent.putExtra("tid",tid);
         startActivity(intent);
+
 
     }
 

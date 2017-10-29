@@ -116,6 +116,7 @@ public class TeacherNaviActivity extends AppCompatActivity
             editor.remove("token");
             editor.remove("username");
             editor.commit();
+            UnSubscribeTopic.unSubscribe(TeacherNaviActivity.this);
             Intent loginIntent = new Intent(this, LoginActivity.class);
             startActivity(loginIntent);
         }

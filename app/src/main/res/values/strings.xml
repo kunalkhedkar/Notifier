@@ -10,12 +10,12 @@
 
 
     <string-array name="class_types">
-        <item>select class</item>
+        <item>select_class</item>
         <item>FYBCS</item>
         <item>SYBCS</item>
         <item>TYBCS</item>
-        <item>MCS Part 1</item>
-        <item>MCS Part 2</item>
+        <item>MCS_Part_1</item>
+        <item>MCS_Part_2</item>
     </string-array>
 
     <string-array name="role_types">

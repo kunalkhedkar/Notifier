@@ -76,7 +76,7 @@ public class StudentNaviActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
         }
     }
 
@@ -123,6 +123,7 @@ public class StudentNaviActivity extends AppCompatActivity
             SharedPreferences.Editor editor=sharedPreferences.edit();
             editor.putBoolean("isLoggedIn",false);
             editor.commit();
+            UnSubscribeTopic.unSubscribe(StudentNaviActivity.this);
             Intent loginIntent = new Intent(this, LoginActivity.class);
             startActivity(loginIntent);
         }

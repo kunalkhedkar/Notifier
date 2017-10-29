@@ -1,6 +1,7 @@
 package com.example.kaushal.notifier;
 
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,11 +13,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -112,15 +116,15 @@ public class ViewTeacherActivity extends AppCompatActivity implements AdapterVie
 
     private void approvedTeacher(int i) {
         Teacher teacher = TeacherObjectList.get(i);
-        Toast.makeText(this, "" + teacher.getT_Username(), Toast.LENGTH_SHORT).show();
-
-        DatabaseReference deleteTeacherRef = FirebaseDatabase.getInstance().getReference("teacher").child(teacher.getT_ID());
+       //
+        final String delTid=teacher.getT_ID();
+        DatabaseReference deleteTeacherRef = FirebaseDatabase.getInstance().getReference("teacher").child(delTid);
         deleteTeacherRef.removeValue();
 
         DatabaseReference saveTeacherRef = FirebaseDatabase.getInstance().getReference("mainteacher");
 
 
-        String t_ID = saveTeacherRef.push().getKey();
+        final String t_ID = saveTeacherRef.push().getKey();
         teacher.setT_ID(t_ID);
         saveTeacherRef.child(t_ID).setValue(teacher);
         SharedPreferences s1 = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
@@ -128,30 +132,43 @@ public class ViewTeacherActivity extends AppCompatActivity implements AdapterVie
         editor.putString("id", t_ID);
 
         //add to user table
-        DatabaseReference USER_REFERENCE=FirebaseDatabase.getInstance().getReference("user");
-        String ID=USER_REFERENCE.push().getKey();
-        Users uu=new Users(t_ID,teacher.getT_Username(),teacher.getT_Password(),teacher.getT_Role(),"token");
-        USER_REFERENCE.child(ID).setValue(uu);
-
-//        USER_REFERENCE.child(ID).setValue(uu);
-
-        USER_REFERENCE.addValueEventListener(new ValueEventListener() {
+        DatabaseReference USER_REFERENCE = FirebaseDatabase.getInstance().getReference("user");
+        final String ID = USER_REFERENCE.push().getKey();
+        Users uu = new Users(t_ID, teacher.getT_Username(), teacher.getT_Password(), teacher.getT_Role(), "token");
+        USER_REFERENCE.child(ID).setValue(uu).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for(DataSnapshot usersDataSnapshot: dataSnapshot.getChildren()){
-                    Users u1=usersDataSnapshot.getValue(Users.class);
-                    Log.d("TAG",u1.getU_ID()+"\t"+u1.getU_Username()+"\t"+u1.getU_Password()+"\t"+u1.getU_Role()+"\t"+u1.getU_Token());
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onComplete(@NonNull Task<Void> task) {
+                CreateNotification createNotification=new CreateNotification(ViewTeacherActivity.this);
+                createNotification.sendNotificationTopic("Approved Account","Your account has been sucessfully approved",delTid);
+                Toast.makeText(ViewTeacherActivity.this, "sent", Toast.LENGTH_SHORT).show();
             }
         });
 
+
+//        CreateNotification createNotification=new CreateNotification(ViewTeacherActivity.this);
+//        createNotification.sendNotificationTopic("Approved Account","Your account has been sucessfully approved",ID);
+//        Toast.makeText(ViewTeacherActivity.this, "sent", Toast.LENGTH_SHORT).show();
+
+//        USER_REFERENCE.child(ID).setValue(uu);
+
+//        USER_REFERENCE.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                for(DataSnapshot usersDataSnapshot: dataSnapshot.getChildren()){
+//                    Users u1=usersDataSnapshot.getValue(Users.class);
+//                    Log.d("TAG",u1.getU_ID()+"\t"+u1.getU_Username()+"\t"+u1.getU_Password()+"\t"+u1.getU_Role()+"\t"+u1.getU_Token());
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//    }
     }
 }

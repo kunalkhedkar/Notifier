@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class LoginActivity extends AppCompatActivity {
     DatabaseReference USER_REFEENCE;
@@ -37,6 +38,13 @@ public class LoginActivity extends AppCompatActivity {
 // to hide action bar
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+
+
+        String tid=getIntent().getStringExtra("tid");
+        if(tid!=null) {
+            Toast.makeText(this, "login "+tid, Toast.LENGTH_SHORT).show();
+            FirebaseMessaging.getInstance().subscribeToTopic(tid);
+        }
 
         //SharedPreferences preferences=getSharedPreferences(MyConstant.SHARED_FILE,MODE_PRIVATE);
         //haredPreferences.Editor editor = preferences.edit();
@@ -91,12 +99,18 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putBoolean("isLoggedIn", true);
                             // add islogged value to shared editor
 
+
+                            unSubscribe();
+
                             if (role.equalsIgnoreCase("student")) {
                                 editor.putBoolean("isLoggedIn", true);
                                 editor.putString("role", "student");
                                 editor.putString("username", user1);
                                 editor.putString("id", ID);
                                 editor.commit();
+
+                                registerForNotification(uu.getU_ID());
+
                                 flag = true;
                                 Intent intent = new Intent(LoginActivity.this, StudentNaviActivity.class);
                                 startActivity(intent);
@@ -107,7 +121,10 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString("username", user1);
                                 editor.putString("id", ID);
                                 editor.commit();
+
                                 flag = true;
+                                FirebaseMessaging.getInstance().subscribeToTopic(ID);
+
                                 Intent intent = new Intent(LoginActivity.this, TeacherNaviActivity.class);
                                 startActivity(intent);
                                 break;
@@ -119,6 +136,9 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString("id", ID);
                                 editor.commit();
                                 flag = true;
+
+                                FirebaseMessaging.getInstance().subscribeToTopic("head");
+
                                 Intent intent = new Intent(LoginActivity.this, HeadNaviActivity.class);
                                 startActivity(intent);
                                 break;
@@ -152,6 +172,64 @@ public class LoginActivity extends AppCompatActivity {
         else
             user.setError("please Check Username or Password");
     }
+
+    private void unSubscribe() {
+
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("head");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("teacher");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("student");
+
+        String classs[]=getResources().getStringArray(R.array.class_types);
+        for(int i=0;i<classs.length;i++){
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(classs[i]);
+        }
+
+
+        USER_REFEENCE.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot userDataSnapshot : dataSnapshot.getChildren()) {
+                    Users uu = userDataSnapshot.getValue(Users.class);
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(uu.getU_ID());
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        }
+
+
+
+    private void registerForNotification(final String id) {
+        DatabaseReference STUDENT_REFERENCE = FirebaseDatabase.getInstance().getReference("student");
+        STUDENT_REFERENCE.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot userDataSnapshot:dataSnapshot.getChildren()){
+                    Student ss=userDataSnapshot.getValue(Student.class);
+                    if(ss.getS_ID().equals(id)) {
+                        FirebaseMessaging.getInstance().subscribeToTopic("student");
+                        FirebaseMessaging.getInstance().subscribeToTopic(ss.getS_Class());
+                        FirebaseMessaging.getInstance().subscribeToTopic(id);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+
 
     public boolean validLogin() {
 

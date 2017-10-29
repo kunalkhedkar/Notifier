@@ -216,6 +216,8 @@ public class ScheduleActivity extends AppCompatActivity {
         Log.d("TAG","Post"+ID);
         Schedule s=new Schedule(username,ID,t_name,s_name,s_marks,s_description,s_date,s_time,s_classType,s_testType);
         SCHEDULE_REFERENCE.child(ID).setValue(s);
+        //oncomplete listener
+        //create notification fot head
 
         Toast.makeText(this, "schedule add sucessfully", Toast.LENGTH_SHORT).show();
 
