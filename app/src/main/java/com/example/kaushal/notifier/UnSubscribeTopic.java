@@ -1,6 +1,7 @@
 package com.example.kaushal.notifier;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,7 +18,7 @@ public class UnSubscribeTopic {
 
     public static void unSubscribe(Context context){
         DatabaseReference USER_REFEENCE = FirebaseDatabase.getInstance().getReference("user");
-
+        Toast.makeText(context, "unSubscribe from class", Toast.LENGTH_SHORT).show();
         FirebaseMessaging.getInstance().unsubscribeFromTopic("head");
         FirebaseMessaging.getInstance().unsubscribeFromTopic("teacher");
         FirebaseMessaging.getInstance().unsubscribeFromTopic("student");

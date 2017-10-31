@@ -1,5 +1,6 @@
 package com.example.kaushal.notifier;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -118,20 +121,57 @@ public class ViewScheduleActivity extends AppCompatActivity implements AdapterVi
 
     }
     private void approvedSchedule(int i) {
-        Schedule schedule=ScheduleObjectList.get(i);
+        final Schedule schedule=ScheduleObjectList.get(i);
         Toast.makeText(this, ""+schedule.getT_name(),Toast.LENGTH_SHORT).show();
-
+        Log.d("sch", "approvedSchedule: "+schedule.getSchedule_ID());
         DatabaseReference deleteScheRefdule=FirebaseDatabase.getInstance().getReference("schedule").child(schedule.getSchedule_ID());
         deleteScheRefdule.removeValue();
 
         DatabaseReference saveScheduleRef=FirebaseDatabase.getInstance().getReference("mainschedule");
-
+        final DatabaseReference teacherRef=FirebaseDatabase.getInstance().getReference("mainteacher");
 
         String s_ID=saveScheduleRef.push().getKey();
         schedule.setSchedule_ID(s_ID);
-        saveScheduleRef.child(s_ID).setValue(schedule);
+        final String teacherUsername=schedule.getT_username();
+        final String smsg=schedule.getT_name()+" Posted new Schedule";
+        final String tmsg=schedule.getT_name()+"posted a new schedule for "+schedule.getClassType()+"of subject "+schedule.getSub_name()+" is approved";
+
+        saveScheduleRef.child(s_ID).setValue(schedule).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(ViewScheduleActivity.this, "Done", Toast.LENGTH_SHORT).show();
+                final CreateNotification createNotification=new CreateNotification(ViewScheduleActivity.this);
+                createNotification.sendNotificationTopic("New schedule has been post",smsg,schedule.getClassType());
+                Log.d("sch", "onComplete: "+schedule.getClassType());
+                Log.d("sch", "onComplete: "+teacherUsername);
+
+                teacherRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot userDataSnapshot:dataSnapshot.getChildren()){
+                            Teacher teacher=userDataSnapshot.getValue(Teacher.class);
+                            if(teacher.getT_Username().equals(teacherUsername)){
+                                createNotification.sendNotificationTopic("Approved schedule",tmsg,"teacher");
+//                                createNotification.sendNotificationTopic("Approved schedule",tmsg,teacher.getT_Username());
+                                Log.d("sch", "onComplete: TID  "+teacher.getT_ID()+"\n teacher "+teacher.getT_Username());
+                                Toast.makeText(ViewScheduleActivity.this, "teacher send", Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+
+
+
+
 
     }
 
-    }
+}
 

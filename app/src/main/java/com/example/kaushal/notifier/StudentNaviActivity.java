@@ -122,6 +122,11 @@ public class StudentNaviActivity extends AppCompatActivity
             SharedPreferences sharedPreferences=getSharedPreferences(MyConstant.SHARED_FILE,MODE_PRIVATE);
             SharedPreferences.Editor editor=sharedPreferences.edit();
             editor.putBoolean("isLoggedIn",false);
+            editor.putBoolean("isLoggedIn",false);
+            editor.remove("role");
+            editor.remove("id");
+            editor.remove("token");
+            editor.remove("username");
             editor.commit();
             UnSubscribeTopic.unSubscribe(StudentNaviActivity.this);
             Intent loginIntent = new Intent(this, LoginActivity.class);

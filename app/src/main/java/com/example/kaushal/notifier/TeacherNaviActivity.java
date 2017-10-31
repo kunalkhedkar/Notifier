@@ -102,7 +102,11 @@ public class TeacherNaviActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
+
             Toast.makeText(this, "open Profile", Toast.LENGTH_SHORT).show();
+            final CreateNotification createNotification=new CreateNotification(this);
+            createNotification.sendNotificationTopic("Test","new teacher teast","-KxiGSz2TzkYAo53UKSf");
+
         } else if (id == R.id.nav_my_schedule) {
             Toast.makeText(this, "open my schedule", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_all_schedule) {

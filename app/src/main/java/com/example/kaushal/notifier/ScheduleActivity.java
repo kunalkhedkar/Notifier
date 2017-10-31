@@ -3,6 +3,7 @@ package com.example.kaushal.notifier;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -95,14 +98,18 @@ public class ScheduleActivity extends AppCompatActivity {
             }
 
         };
+//        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+
 
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                new DatePickerDialog(ScheduleActivity.this, datePicker, myCalendar
+              DatePickerDialog datePickerDialog=  new DatePickerDialog(ScheduleActivity.this, datePicker, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+                datePickerDialog.show();
 
                 // new DatePickerDialog(MainActivity.this,datePicker,1994,02,24).show();
             }
@@ -120,6 +127,7 @@ public class ScheduleActivity extends AppCompatActivity {
                     AM_PM = "AM";
                 } else {
                     AM_PM = "PM";
+                    hourOfDay-=12;
                 }
                 time.setText(hourOfDay+" : "+minute+" "+AM_PM);
             }
@@ -212,14 +220,25 @@ public class ScheduleActivity extends AppCompatActivity {
 // get username from shardpref
         SharedPreferences pref=getSharedPreferences(MyConstant.SHARED_FILE,MODE_PRIVATE);
         String username=pref.getString("username",null);
+        final String title="New Schedule Posted";
+        final String msg=username+"post a new schedule";
         String ID=SCHEDULE_REFERENCE.push().getKey();
         Log.d("TAG","Post"+ID);
         Schedule s=new Schedule(username,ID,t_name,s_name,s_marks,s_description,s_date,s_time,s_classType,s_testType);
-        SCHEDULE_REFERENCE.child(ID).setValue(s);
+        SCHEDULE_REFERENCE.child(ID).setValue(s).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(ScheduleActivity.this, "schedule add sucessfully", Toast.LENGTH_SHORT).show();
+                CreateNotification createNotification=new CreateNotification(ScheduleActivity.this);
+                createNotification.sendNotificationTopic(title,msg,"head");
+
+
+            }
+        });
         //oncomplete listener
         //create notification fot head
 
-        Toast.makeText(this, "schedule add sucessfully", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "schedule add sucessfully", Toast.LENGTH_SHORT).show();
 
     }
 

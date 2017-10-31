@@ -47,7 +47,7 @@ public class HeadProfileActivity extends AppCompatActivity {
         // Log.d("TAG", "onCreate:"+sharedusername);
 
         DatabaseReference Ref = FirebaseDatabase.getInstance().getReference("head");
-        Ref.addValueEventListener(new ValueEventListener() {
+        Ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot userDataSnapShot : dataSnapshot.getChildren()) {
@@ -148,6 +148,4 @@ public class HeadProfileActivity extends AppCompatActivity {
 
     }
 
-
-
-    }
+}

@@ -33,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
+
     EditText Rname,Rusername,Rpassword,Rmobile,Radress,RroleNumber;
     Spinner Rclass,Rrole;
 
@@ -191,7 +192,6 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-
             final String ID = STUDENT_REFERENCE.push().getKey();
             Log.d("TAG", "registerOnClick:" + ID);
             Student s1 = new Student(ID, name, username, password, RollNumber, mobile, address, roleType, classType);
@@ -199,7 +199,9 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     Toast.makeText(RegisterActivity.this, "Register Sucessfully", Toast.LENGTH_SHORT).show();
-                    FirebaseMessaging.getInstance().subscribeToTopic(ID);// Toast.makeText(RegisterActivity.this, "Please Login", Toast.LENGTH_SHORT).show();
+                    FirebaseMessaging.getInstance().subscribeToTopic(ID);
+                    //FirebaseMessaging.getInstance().subscribeToTopic("student");
+
                 }
 
             });

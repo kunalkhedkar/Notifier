@@ -54,7 +54,7 @@ public class ChangePassword extends AppCompatActivity {
                     final String myusername = pre.getString("username", null);
 
                     final DatabaseReference Ref = FirebaseDatabase.getInstance().getReference("user");
-                    Ref.addValueEventListener(new ValueEventListener() {
+                    Ref.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             //Log.d("TAG", "onDataChange:"+old);

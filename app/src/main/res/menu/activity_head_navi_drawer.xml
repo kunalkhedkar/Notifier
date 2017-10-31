@@ -5,7 +5,7 @@
         <item
             android:onClick="showProfile"
             android:id="@+id/nav_profile_head"
-            android:icon="@drawable/profile_2"
+            android:icon="@drawable/ic_person_black_24dp"
             android:title="Profile" />
 
         <item android:onClick="viewTeacher"

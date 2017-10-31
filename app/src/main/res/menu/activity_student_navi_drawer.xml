@@ -4,7 +4,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_profile_student"
-            android:icon="@drawable/profile_2"
+            android:icon="@drawable/ic_person_black_24dp"
             android:title="Profile" />
         <item
             android:onClick="viewMainSchedule"

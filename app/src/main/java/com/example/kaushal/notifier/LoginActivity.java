@@ -123,7 +123,9 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.commit();
 
                                 flag = true;
-                                FirebaseMessaging.getInstance().subscribeToTopic(ID);
+                                FirebaseMessaging.getInstance().subscribeToTopic(uu.getU_ID());
+//                                FirebaseMessaging.getInstance().subscribeToTopic("teacher");
+                                Log.d("TAG", "onDataChange: Teacher subscribeToTopic "+uu.getU_ID());
 
                                 Intent intent = new Intent(LoginActivity.this, TeacherNaviActivity.class);
                                 startActivity(intent);
@@ -175,6 +177,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void unSubscribe() {
 
+        Toast.makeText(this, "unSubscribe from login", Toast.LENGTH_SHORT).show();
         FirebaseMessaging.getInstance().unsubscribeFromTopic("head");
         FirebaseMessaging.getInstance().unsubscribeFromTopic("teacher");
         FirebaseMessaging.getInstance().unsubscribeFromTopic("student");
