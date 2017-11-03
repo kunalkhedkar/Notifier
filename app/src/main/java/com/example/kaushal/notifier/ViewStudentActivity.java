@@ -39,7 +39,7 @@ public class ViewStudentActivity extends AppCompatActivity {
         studentList= (ListView) findViewById(R.id.studentList);
         list=new ArrayList<String>();
 
-
+        setTitle("Schedular");
         buildStudentData();
 
         adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list);

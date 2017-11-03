@@ -44,7 +44,7 @@ public class ViewTeacherActivity extends AppCompatActivity implements AdapterVie
         listData = new ArrayList();
         TeacherObjectList = new ArrayList<>();
 
-        //for reading
+        setTitle("Schedular");
 
         buildTeacherData();
 

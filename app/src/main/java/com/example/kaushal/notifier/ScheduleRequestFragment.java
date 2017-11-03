@@ -81,8 +81,7 @@ public class ScheduleRequestFragment extends Fragment {
                 View child = rv.findChildViewUnder(e.getX(), e.getY());
                 if(child != null && gestureDetector.onTouchEvent(e)) {
                     int position = rv.getChildAdapterPosition(child);
-//                    Toast.makeText(getContext(), countries.get(position), Toast.LENGTH_SHORT).show();
-
+//                    Toast.makeText(getContext(),position, Toast.LENGTH_SHORT).show();
                 }
 
                 return false;

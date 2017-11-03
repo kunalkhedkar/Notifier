@@ -53,18 +53,23 @@ public class ScheduleDataAdapter extends RecyclerView.Adapter<ScheduleDataAdapte
         viewHolder.classType.setText(scheduleList.get(i).getClassType());
         viewHolder.desc.setText(scheduleList.get(i).getDescription());
         viewHolder.testType.setText(scheduleList.get(i).getSubjectType());
+        Log.d("kunal", "onComplete: "+i);
         viewHolder.approvedimg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), scheduleList.get(i).getSub_name(), Toast.LENGTH_SHORT).show();
-                approvedSchedule(i);
+
+                if(!scheduleList.isEmpty()) {
+                    approvedSchedule(i);
+                }else {
+                    Toast.makeText(view.getContext(), "empty", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
     }
 
 
-    private void approvedSchedule(int i) {
+
+    private void approvedSchedule(final int i) {
         final Schedule schedule=scheduleList.get(i);
 //        Toast.makeText(this, ""+schedule.getT_name(),Toast.LENGTH_SHORT).show();
         Log.d("sch", "approvedSchedule: "+schedule.getSchedule_ID());
@@ -84,7 +89,7 @@ public class ScheduleDataAdapter extends RecyclerView.Adapter<ScheduleDataAdapte
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(view.getContext(), "Done", Toast.LENGTH_SHORT).show();
-                final CreateNotification createNotification=new CreateNotification(view.getContext());
+                CreateNotification createNotification=new CreateNotification(view.getContext());
                 createNotification.sendNotificationTopic("New schedule has been post",smsg,schedule.getClassType());
                 Log.d("sch", "onComplete: "+schedule.getClassType());
                 Log.d("sch", "onComplete: "+teacherUsername);
@@ -95,10 +100,11 @@ public class ScheduleDataAdapter extends RecyclerView.Adapter<ScheduleDataAdapte
                         for(DataSnapshot userDataSnapshot:dataSnapshot.getChildren()){
                             Teacher teacher=userDataSnapshot.getValue(Teacher.class);
                             if(teacher.getT_Username().equals(teacherUsername)){
+                                CreateNotification createNotification=new CreateNotification(view.getContext());
                                 createNotification.sendNotificationTopic("Approved schedule",tmsg,"teacher");
 //                                createNotification.sendNotificationTopic("Approved schedule",tmsg,teacher.getT_Username());
-                                Log.d("sch", "onComplete: TID  "+teacher.getT_ID()+"\n teacher "+teacher.getT_Username());
                                 Toast.makeText(view.getContext(), "teacher send", Toast.LENGTH_SHORT).show();
+                                notifyItemRemoved(i);
                                 break;
                             }
                         }

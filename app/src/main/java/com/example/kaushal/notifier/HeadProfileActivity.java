@@ -33,6 +33,7 @@ public class HeadProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_head_profile);
+        setTitle("Schedular");
 
         username = (EditText) findViewById(R.id.headUsername);
         fullname = (EditText) findViewById(R.id.headName);

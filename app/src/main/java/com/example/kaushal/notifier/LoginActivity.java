@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +26,8 @@ public class LoginActivity extends AppCompatActivity {
     String role;
     Boolean flag = false;
     String sample;
+    ProgressBar progressBar;
+    Button Login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +36,9 @@ public class LoginActivity extends AppCompatActivity {
 
         user = (EditText) findViewById(R.id.username);
         pass = (EditText) findViewById(R.id.password);
-
+        progressBar= (ProgressBar) findViewById(R.id.ProgressBar);
+        Login= (Button) findViewById(R.id.Login);
+        Login.setVisibility(View.VISIBLE);
         // url
         USER_REFEENCE = FirebaseDatabase.getInstance().getReference("user");
 // to hide action bar
@@ -74,6 +80,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
+        progressBar.setVisibility(View.VISIBLE);
+        Login.setVisibility(View.GONE);
+
         final String User = user.getText().toString();
         final String Pass = pass.getText().toString();
 
@@ -99,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putBoolean("isLoggedIn", true);
                             // add islogged value to shared editor
 
-                            UnSubscribeTopic.unSubscribe(LoginActivity.this);
+//                            UnSubscribeTopic.unSubscribe(LoginActivity.this);
 //                            unSubscribe();
 
                             if (role.equalsIgnoreCase("student")) {
@@ -113,8 +122,10 @@ public class LoginActivity extends AppCompatActivity {
                                 registerForNotification(uu.getU_ID());
 
                                 flag = true;
+
                                 Intent intent = new Intent(LoginActivity.this, StudentNaviActivity.class);
                                 startActivity(intent);
+                                progressBar.setVisibility(View.GONE);
                                 break;
                             } else if (role.equalsIgnoreCase("teacher")) {
                                 editor.putBoolean("isLoggedIn", true);
@@ -129,11 +140,11 @@ public class LoginActivity extends AppCompatActivity {
                                 teacherUsername=teacherUsername.replace(".","_");
                                 Log.d("TAG", "onDataChange: sub "+teacherUsername);
                                 FirebaseMessaging.getInstance().subscribeToTopic(teacherUsername);
-//                                FirebaseMessaging.getInstance().subscribeToTopic("teacher");
+                                FirebaseMessaging.getInstance().subscribeToTopic("teacher");
                                 Log.d("TAG", "onDataChange: Teacher subscribeToTopic "+uu.getU_ID());
-
                                 Intent intent = new Intent(LoginActivity.this, TeacherNaviActivity.class);
                                 startActivity(intent);
+                                progressBar.setVisibility(View.GONE);
                                 break;
 
                             } else if (role.equalsIgnoreCase("head")) {
@@ -144,7 +155,9 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.commit();
                                 flag = true;
 
+//                                FirebaseMessaging.getInstance().unsubscribeFromTopic("head");
                                 FirebaseMessaging.getInstance().subscribeToTopic("head");
+                                Toast.makeText(LoginActivity.this, "sub to head2", Toast.LENGTH_SHORT).show();
 
                                 Intent intent = new Intent(LoginActivity.this, HeadNaviActivity.class);
                                 startActivity(intent);
@@ -162,9 +175,11 @@ public class LoginActivity extends AppCompatActivity {
                     if (flag == false) {
                         Log.d("TAG", "onDataChange: fun " + validLogin());
 
-                        if (!validLogin())
+                        if (!validLogin()) {
                             user.setError("please check username or password");
-
+                            Login.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                        }
                     }
                 }
 
@@ -178,6 +193,8 @@ public class LoginActivity extends AppCompatActivity {
         }
         else
             user.setError("please Check Username or Password");
+
+
     }
 
     private void registerForNotification(final String id) {
@@ -203,8 +220,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
 
     public boolean validLogin() {

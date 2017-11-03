@@ -25,6 +25,7 @@ public class ChangePassword extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
+        setTitle("Schedular");
 
         oldPassword = (EditText) findViewById(R.id.oldpassword);
         newPassword = (EditText) findViewById(R.id.newpassword);
@@ -60,7 +61,7 @@ public class ChangePassword extends AppCompatActivity {
                             //Log.d("TAG", "onDataChange:"+old);
                             for (DataSnapshot userDataSnapShot : dataSnapshot.getChildren()) {
                                 Users u = userDataSnapShot.getValue(Users.class);
-                                if (myusername.equals(u.getU_Username())) {
+                                if ((myusername.equals(u.getU_Username())&&old.equals(u.getU_Password()))) {
                                     sample = u.getU_Password();
                                     u.setU_Password(new1);
                                     String id = userDataSnapShot.getKey();
@@ -71,7 +72,8 @@ public class ChangePassword extends AppCompatActivity {
                                         }
                                     });
                                     break;
-                                }
+                                }else
+                                    oldPassword.setError("old password not correct");
 
                             }
 

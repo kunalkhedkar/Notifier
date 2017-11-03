@@ -33,14 +33,12 @@ public class ViewScheduleActivity extends AppCompatActivity implements AdapterVi
     ArrayAdapter<String> adapter;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_schedule);
 
+        setTitle("Schedular");
 
         SCHEDULE_REFERENCE= FirebaseDatabase.getInstance().getReference("schedule");
         scheduleList= (ListView) findViewById(R.id.scheduleList);
@@ -87,6 +85,8 @@ public class ViewScheduleActivity extends AppCompatActivity implements AdapterVi
             }
         });
     }
+
+
 
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
@@ -140,7 +140,7 @@ public class ViewScheduleActivity extends AppCompatActivity implements AdapterVi
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(ViewScheduleActivity.this, "Done", Toast.LENGTH_SHORT).show();
-                final CreateNotification createNotification=new CreateNotification(ViewScheduleActivity.this);
+                 CreateNotification createNotification=new CreateNotification(ViewScheduleActivity.this);
                 createNotification.sendNotificationTopic("New schedule has been post",smsg,schedule.getClassType());
                 Log.d("sch", "onComplete: "+schedule.getClassType());
                 Log.d("sch", "onComplete: "+teacherUsername);
@@ -151,7 +151,8 @@ public class ViewScheduleActivity extends AppCompatActivity implements AdapterVi
                         for(DataSnapshot userDataSnapshot:dataSnapshot.getChildren()){
                             Teacher teacher=userDataSnapshot.getValue(Teacher.class);
                             if(teacher.getT_Username().equals(teacherUsername)){
-                                createNotification.sendNotificationTopic("Approved schedule",tmsg,"mainteacher");
+                                 CreateNotification createNotification=new CreateNotification(ViewScheduleActivity.this);
+                                createNotification.sendNotificationTopic("Approved schedule",tmsg,"teacher");
 //                                createNotification.sendNotificationTopic("Approved schedule",tmsg,teacher.getT_Username());
                                 Log.d("sch", "onComplete: TID  "+teacher.getT_ID()+"\n teacher "+teacher.getT_Username());
                                 Toast.makeText(ViewScheduleActivity.this, "teacher send", Toast.LENGTH_SHORT).show();

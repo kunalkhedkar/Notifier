@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +30,7 @@ public class TeacherNaviActivity extends AppCompatActivity
     EditText teachername;
     String ID;
     String setEditText;
+    TextView t_username,t_role;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,11 @@ public class TeacherNaviActivity extends AppCompatActivity
         //setContentView(R.layout.activity_schedule);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
        setSupportActionBar(toolbar);
+
+        setTitle("Schedular");
+        SharedPreferences preferences=getSharedPreferences(MyConstant.SHARED_FILE,MODE_PRIVATE);
+        String teacher_username=preferences.getString("username",null);
+        String teacher_role=preferences.getString("role",null);
 
         //teachername= (EditText) findViewById(R.id.teacherName);
 //        SharedPreferences preferences=getSharedPreferences(MyConstant.SHARED_FILE,MODE_PRIVATE);
@@ -58,6 +65,11 @@ public class TeacherNaviActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        t_username=(TextView) navigationView.getHeaderView(0).findViewById(R.id.username);
+        t_role=(TextView) navigationView.getHeaderView(0).findViewById(R.id.role);
+        t_username.setText(teacher_username);
+        t_role.setText(teacher_role);
 
 
 

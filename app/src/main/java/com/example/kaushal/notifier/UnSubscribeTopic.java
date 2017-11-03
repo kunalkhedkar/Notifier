@@ -19,7 +19,9 @@ public class UnSubscribeTopic {
     public static void unSubscribe(Context context){
         DatabaseReference USER_REFEENCE = FirebaseDatabase.getInstance().getReference("user");
         Toast.makeText(context, "unSubscribe from class", Toast.LENGTH_SHORT).show();
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("head");
+
+//        FirebaseMessaging.getInstance().unsubscribeFromTopic("head");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("head1");
         FirebaseMessaging.getInstance().unsubscribeFromTopic("teacher");
         FirebaseMessaging.getInstance().unsubscribeFromTopic("student");
 

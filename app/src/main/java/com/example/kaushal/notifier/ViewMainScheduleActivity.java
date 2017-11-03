@@ -41,6 +41,7 @@ public class ViewMainScheduleActivity extends AppCompatActivity {
         studentList= (ListView) findViewById(R.id.mainSchedule);
         listData=new ArrayList<String>();
         listDataSchedule=new ArrayList<>();
+        setTitle("Schedular");
 
         buildScheduleData();
 

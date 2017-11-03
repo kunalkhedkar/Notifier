@@ -30,12 +30,13 @@ public class ViewMyScheduleActivity extends AppCompatActivity {
         myschedule= (ListView) findViewById(R.id.my_schedule);
         list=new ArrayList<String>();
 
+        setTitle("Schedular");
         adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list);
         myschedule.setAdapter(adapter);
 
         SharedPreferences preference=getSharedPreferences(MyConstant.SHARED_FILE,MODE_PRIVATE);
         final String username=preference.getString("username",null);
-        Log.d("TAG", "onCreate: "+username);
+        Log.d("TAG", "onCreate: preference "+username);
 
 
         SCHEDULE_REFERENCE= FirebaseDatabase.getInstance().getReference("mainschedule");
@@ -51,7 +52,7 @@ public class ViewMyScheduleActivity extends AppCompatActivity {
                     if(username.equals(dbusername)){
                         list.add("Teacher name:\t"+schedule.getT_name()+"\n"+"Subject:\t"+schedule.getSub_name()+"\n"+"Marks:\t"+schedule.getMarks()+"\n"+"Description:\t"+schedule.getDescription()+"\n"+"date:\t"+schedule.getS_date()+"\n"+"Time:\t"+schedule.getS_time()+"\n"+"Class:"+schedule.getClassType()+"\n"+"Test Type:\t"+schedule.getSubjectType());
                         adapter.notifyDataSetChanged();
-                        break;
+
                     }
 
                 }

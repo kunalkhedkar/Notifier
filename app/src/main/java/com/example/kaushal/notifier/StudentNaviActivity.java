@@ -34,7 +34,7 @@ public class StudentNaviActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        setTitle("Schedular");
         // get data from sharedpref
 
         SharedPreferences preferences=getSharedPreferences(MyConstant.SHARED_FILE,MODE_PRIVATE);

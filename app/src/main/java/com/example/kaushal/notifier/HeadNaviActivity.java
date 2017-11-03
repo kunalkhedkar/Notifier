@@ -32,6 +32,7 @@ public class HeadNaviActivity extends AppCompatActivity
         setContentView(R.layout.activity_head_navi);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Schedular");
 
         h_username= (TextView) findViewById(R.id.username);
         h_role= (TextView) findViewById(R.id.role);
@@ -61,6 +62,12 @@ public class HeadNaviActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        h_username=(TextView) navigationView.getHeaderView(0).findViewById(R.id.username);
+        h_role=(TextView) navigationView.getHeaderView(0).findViewById(R.id.role);
+        h_username.setText(head_username);
+        h_role.setText(head_role    );
     }
 
     @Override

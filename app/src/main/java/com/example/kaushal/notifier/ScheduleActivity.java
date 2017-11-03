@@ -47,6 +47,7 @@ public class ScheduleActivity extends AppCompatActivity {
         time= (EditText) findViewById(R.id.s_time);
         selectClass= (Spinner) findViewById(R.id.selectClass);
         selectType= (Spinner) findViewById(R.id.selectTestType);
+        setTitle("Schedular");
 
         SharedPreferences preferences=getSharedPreferences(MyConstant.SHARED_FILE,MODE_PRIVATE);
         String id =preferences.getString("id",null);
@@ -232,10 +233,10 @@ public class ScheduleActivity extends AppCompatActivity {
         SCHEDULE_REFERENCE.child(ID).setValue(s).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(ScheduleActivity.this, "schedule add sucessfully", Toast.LENGTH_SHORT).show();
+
                 CreateNotification createNotification=new CreateNotification(ScheduleActivity.this);
                 createNotification.sendNotificationTopic(title,msg,"head");
-
+                Toast.makeText(ScheduleActivity.this, "schedule add sucessfully", Toast.LENGTH_SHORT).show();
 
             }
         });
