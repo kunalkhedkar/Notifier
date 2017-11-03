@@ -151,7 +151,7 @@ public class ViewScheduleActivity extends AppCompatActivity implements AdapterVi
                         for(DataSnapshot userDataSnapshot:dataSnapshot.getChildren()){
                             Teacher teacher=userDataSnapshot.getValue(Teacher.class);
                             if(teacher.getT_Username().equals(teacherUsername)){
-                                createNotification.sendNotificationTopic("Approved schedule",tmsg,"teacher");
+                                createNotification.sendNotificationTopic("Approved schedule",tmsg,"mainteacher");
 //                                createNotification.sendNotificationTopic("Approved schedule",tmsg,teacher.getT_Username());
                                 Log.d("sch", "onComplete: TID  "+teacher.getT_ID()+"\n teacher "+teacher.getT_Username());
                                 Toast.makeText(ViewScheduleActivity.this, "teacher send", Toast.LENGTH_SHORT).show();
@@ -166,10 +166,6 @@ public class ViewScheduleActivity extends AppCompatActivity implements AdapterVi
                 });
             }
         });
-
-
-
-
 
     }
 

@@ -35,6 +35,10 @@ public class UnSubscribeTopic {
                 for (DataSnapshot userDataSnapshot : dataSnapshot.getChildren()) {
                     Users uu = userDataSnapshot.getValue(Users.class);
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(uu.getU_ID());
+                    String usernameSub=uu.getU_Username();
+                    usernameSub=usernameSub.replace("@","_");
+                    usernameSub=usernameSub.replace(".","_");
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(usernameSub);
                 }
 
             }

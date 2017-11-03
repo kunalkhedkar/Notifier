@@ -99,14 +99,15 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putBoolean("isLoggedIn", true);
                             // add islogged value to shared editor
 
-
-                            unSubscribe();
+                            UnSubscribeTopic.unSubscribe(LoginActivity.this);
+//                            unSubscribe();
 
                             if (role.equalsIgnoreCase("student")) {
                                 editor.putBoolean("isLoggedIn", true);
                                 editor.putString("role", "student");
                                 editor.putString("username", user1);
                                 editor.putString("id", ID);
+                                //editor.putString("classType",null);
                                 editor.commit();
 
                                 registerForNotification(uu.getU_ID());
@@ -123,7 +124,11 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.commit();
 
                                 flag = true;
-                                FirebaseMessaging.getInstance().subscribeToTopic(uu.getU_ID());
+                                String teacherUsername=uu.getU_Username();
+                                teacherUsername=teacherUsername.replace("@","_");
+                                teacherUsername=teacherUsername.replace(".","_");
+                                Log.d("TAG", "onDataChange: sub "+teacherUsername);
+                                FirebaseMessaging.getInstance().subscribeToTopic(teacherUsername);
 //                                FirebaseMessaging.getInstance().subscribeToTopic("teacher");
                                 Log.d("TAG", "onDataChange: Teacher subscribeToTopic "+uu.getU_ID());
 
@@ -174,38 +179,6 @@ public class LoginActivity extends AppCompatActivity {
         else
             user.setError("please Check Username or Password");
     }
-
-    private void unSubscribe() {
-
-        Toast.makeText(this, "unSubscribe from login", Toast.LENGTH_SHORT).show();
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("head");
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("teacher");
-        FirebaseMessaging.getInstance().unsubscribeFromTopic("student");
-
-        String classs[]=getResources().getStringArray(R.array.class_types);
-        for(int i=0;i<classs.length;i++){
-            FirebaseMessaging.getInstance().unsubscribeFromTopic(classs[i]);
-        }
-
-
-        USER_REFEENCE.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot userDataSnapshot : dataSnapshot.getChildren()) {
-                    Users uu = userDataSnapshot.getValue(Users.class);
-                    FirebaseMessaging.getInstance().unsubscribeFromTopic(uu.getU_ID());
-                }
-
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        }
-
-
 
     private void registerForNotification(final String id) {
         DatabaseReference STUDENT_REFERENCE = FirebaseDatabase.getInstance().getReference("student");

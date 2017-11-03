@@ -35,21 +35,12 @@ public class StudentNaviActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-
-
-       s_username= (TextView) findViewById(R.id.username);
-        s_role= (TextView) findViewById(R.id.role);
-
-
+        // get data from sharedpref
 
         SharedPreferences preferences=getSharedPreferences(MyConstant.SHARED_FILE,MODE_PRIVATE);
         String student_username=preferences.getString("username",null);
         String student_role=preferences.getString("role",null);
         Log.d("TAG", "onCreate:"+student_username+"\n"+student_role);
-
-        //s_username.setText(student_username);
-        //s_role.setText(student_role);
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +59,13 @@ public class StudentNaviActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        s_username=(TextView) navigationView.getHeaderView(0).findViewById(R.id.username);
+        s_role=(TextView) navigationView.getHeaderView(0).findViewById(R.id.role);
+        s_username.setText(student_username);
+        s_role.setText(student_role);
+
+
     }
 
     @Override
@@ -167,5 +165,10 @@ public class StudentNaviActivity extends AppCompatActivity
         Intent intent=new Intent(StudentNaviActivity.this,ViewMainScheduleActivity.class);
         startActivity(intent);
 
+    }
+
+    public void student_profile(MenuItem item) {
+        Intent intent=new Intent(StudentNaviActivity.this,ChangePassword.class);
+        startActivity(intent);
     }
 }

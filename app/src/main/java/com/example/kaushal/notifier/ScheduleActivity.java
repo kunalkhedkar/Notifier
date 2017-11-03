@@ -3,6 +3,7 @@ package com.example.kaushal.notifier;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -108,7 +109,10 @@ public class ScheduleActivity extends AppCompatActivity {
               DatePickerDialog datePickerDialog=  new DatePickerDialog(ScheduleActivity.this, datePicker, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+                }
                 datePickerDialog.show();
 
                 // new DatePickerDialog(MainActivity.this,datePicker,1994,02,24).show();

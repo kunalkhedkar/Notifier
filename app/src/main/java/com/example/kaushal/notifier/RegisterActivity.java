@@ -78,8 +78,32 @@ public class RegisterActivity extends AppCompatActivity {
 
         // add listerner to spinner for visibility
 
+        Rrole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedRole=role[i];
+                if(selectedRole.equals("teacher")){
+                    RroleNumber.setVisibility(View.GONE);
+                    Rclass.setVisibility(View.GONE);
+                }else
+                {
+                    RroleNumber.setVisibility(View.VISIBLE);
+                    Rclass.setVisibility(View.VISIBLE);
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
     }
+
+
+
 
     public void registerOnClick(View view) {
 
@@ -206,6 +230,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             });
             //read
+
 //            STUDENT_REFERENCE.addValueEventListener(new ValueEventListener() {
 //                @Override
 //                public void onDataChange(DataSnapshot dataSnapshot) {
@@ -227,8 +252,8 @@ public class RegisterActivity extends AppCompatActivity {
 //
             acceptUser(ID,username,password,roleType,token);
             //add to shared
-//            SharedPreferences preferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
-//            SharedPreferences.Editor editor = preferences.edit();
+             SharedPreferences preferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
+               SharedPreferences.Editor editor = preferences.edit();
 //            editor.putString("id",ID);
 //            editor.putString("role",roleType);
 //            editor.putString("username",username);
@@ -239,7 +264,9 @@ public class RegisterActivity extends AppCompatActivity {
 //            Intent intent=new Intent(this,LoginActivity.class);
 //            startActivity(intent);
 
-
+            editor.putString("classType",classType);
+            editor.commit();
+            Log.d("TAG", "classType:"+classType );
         }
         /*
         this.t_ID = t_ID;

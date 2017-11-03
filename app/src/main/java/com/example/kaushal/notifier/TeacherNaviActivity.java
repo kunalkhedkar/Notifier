@@ -159,6 +159,11 @@ public class TeacherNaviActivity extends AppCompatActivity
         startActivity(in);
 
     }
+
+    public void teacher_profile(MenuItem item) {
+        Intent intent=new Intent(TeacherNaviActivity.this,ChangePassword.class);
+        startActivity(intent);
+    }
 //    public void setTeacherName()
 //    {
 //        DatabaseReference teacherRef= FirebaseDatabase.getInstance().getReference("mainteacher").child(ID);

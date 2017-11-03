@@ -1,5 +1,6 @@
 package com.example.kaushal.notifier;
 
+import android.content.SharedPreferences;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,10 @@ public class ViewMainScheduleActivity extends AppCompatActivity {
     ArrayList<String> listData;
     ArrayList<Schedule> listDataSchedule;
     ArrayAdapter<String>adapter;
+    String dbClassType;
+    String username;
+    DatabaseReference Stud;
+   // String classType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,7 @@ public class ViewMainScheduleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_main_schedule);
 
         MAIN_SCHEDULE_REFERENCE= FirebaseDatabase.getInstance().getReference("mainschedule");
+        Stud= FirebaseDatabase.getInstance().getReference("student");
         studentList= (ListView) findViewById(R.id.mainSchedule);
         listData=new ArrayList<String>();
         listDataSchedule=new ArrayList<>();
@@ -40,7 +46,10 @@ public class ViewMainScheduleActivity extends AppCompatActivity {
 
         adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listData);
         studentList.setAdapter(adapter);
-
+        SharedPreferences preference=getSharedPreferences(MyConstant.SHARED_FILE,MODE_PRIVATE);
+        //classType=preference.getString("classType",null);
+        //Log.d("TAG", "scheduleClass:"+classType);
+        username=preference.getString("username",null);
 
 
 
@@ -48,27 +57,31 @@ public class ViewMainScheduleActivity extends AppCompatActivity {
     }
 
     public void buildScheduleData(){
-        MAIN_SCHEDULE_REFERENCE.addValueEventListener(new ValueEventListener() {
+        Stud.addValueEventListener(new ValueEventListener() {
             @Override
-
             public void onDataChange(DataSnapshot dataSnapshot) {
-                listData.clear();
-                for(DataSnapshot userDataSnapShot:dataSnapshot.getChildren()){
-                    Schedule schedule=userDataSnapShot.getValue(Schedule.class);
-                    listDataSchedule.add(schedule);
-                    listData.add("Teacher name:\t"+schedule.getT_name()+"\n"+"Subject:\t"+schedule.getSub_name()+"\n"+"Marks:\t"+schedule.getMarks()+"\n"+"Description:\t"+schedule.getDescription()+"\n"+"date:\t"+schedule.getS_date()+"\n"+"Time:\t"+schedule.getS_time()+"\n"+"Class:"+schedule.getClassType()+"\n"+"Test Type:\t"+schedule.getSubjectType());
-                    Log.d("TAG", "onDataChange: "+schedule.getT_name()+"\n"+schedule.getSub_name()+"\n"+schedule.getMarks()+"\n"+schedule.getDescription()+"\n"+schedule.getS_date()+"\n"+schedule.getS_time()+"\n"+schedule.getClassType()+""+schedule.getSubjectType());
-                    adapter.notifyDataSetChanged();
-                }
-//                Collections.reverse(listData);
-                Collections.sort(listDataSchedule, new CustomComparator());
-                listData.clear();
-                for(Schedule schedule:listDataSchedule){
-//                    Log.d("date", "onDataChange: "+schedule.getS_date());
-                    listData.add("Teacher name:\t"+schedule.getT_name()+"\n"+"Subject:\t"+schedule.getSub_name()+"\n"+"Marks:\t"+schedule.getMarks()+"\n"+"Description:\t"+schedule.getDescription()+"\n"+"date:\t"+schedule.getS_date()+"\n"+"Time:\t"+schedule.getS_time()+"\n"+"Class:"+schedule.getClassType()+"\n"+"Test Type:\t"+schedule.getSubjectType());
+                for(DataSnapshot userDataSnapshots:dataSnapshot.getChildren()){
+                    final Student student=userDataSnapshots.getValue(Student.class);
+                    if(username.equals(student.gets_Username())){
+                        MAIN_SCHEDULE_REFERENCE.addValueEventListener(new ValueEventListener() {
+                            String classType=student.getS_Class();
 
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for(DataSnapshot userDataSnapshots1:dataSnapshot.getChildren()){
+                                    Schedule schedule=userDataSnapshots1.getValue(Schedule.class);
+                                    if(classType.equals(schedule.getClassType())){
+                                        listData.add("Teacher name:\t"+schedule.getT_name()+"\n"+"Subject:\t"+schedule.getSub_name()+"\n"+"Marks:\t"+schedule.getMarks()+"\n"+"Description:\t"+schedule.getDescription()+"\n"+"date:\t"+schedule.getS_date()+"\n"+"Time:\t"+schedule.getS_time()+"\n"+"Class:"+schedule.getClassType()+"\n"+"Test Type:\t"+schedule.getSubjectType());
+                                    }
+                                }
+                            }
 
-                    Log.d("TAG", "onCreate: ");
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
                 }
 
             }
@@ -78,7 +91,38 @@ public class ViewMainScheduleActivity extends AppCompatActivity {
 
             }
         });
-    }
+//        MAIN_SCHEDULE_REFERENCE.addValueEventListener(new ValueEventListener() {
+//            @Override
+//
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                listData.clear();
+//                for(DataSnapshot userDataSnapShot:dataSnapshot.getChildren()){
+//                    Schedule schedule=userDataSnapShot.getValue(Schedule.class);
+//                    listDataSchedule.add(schedule);
+//                    listData.add("Teacher name:\t"+schedule.getT_name()+"\n"+"Subject:\t"+schedule.getSub_name()+"\n"+"Marks:\t"+schedule.getMarks()+"\n"+"Description:\t"+schedule.getDescription()+"\n"+"date:\t"+schedule.getS_date()+"\n"+"Time:\t"+schedule.getS_time()+"\n"+"Class:"+schedule.getClassType()+"\n"+"Test Type:\t"+schedule.getSubjectType());
+//                    Log.d("TAG", "onDataChange: "+schedule.getT_name()+"\n"+schedule.getSub_name()+"\n"+schedule.getMarks()+"\n"+schedule.getDescription()+"\n"+schedule.getS_date()+"\n"+schedule.getS_time()+"\n"+schedule.getClassType()+""+schedule.getSubjectType());
+//                    adapter.notifyDataSetChanged();
+//                }
+////                Collections.reverse(listData);
+//                Collections.sort(listDataSchedule, new CustomComparator());
+//                listData.clear();
+//                for(Schedule schedule:listDataSchedule){
+//                    dbClassType=schedule.getClassType();
+//                    if(classType.equals(dbClassType)) {
+//                        listData.add("Teacher name:\t" + schedule.getT_name() + "\n" + "Subject:\t" + schedule.getSub_name() + "\n" + "Marks:\t" + schedule.getMarks() + "\n" + "Description:\t" + schedule.getDescription() + "\n" + "date:\t" + schedule.getS_date() + "\n" + "Time:\t" + schedule.getS_time() + "\n" + "Class:" + schedule.getClassType() + "\n" + "Test Type:\t" + schedule.getSubjectType());
+//                    }
+//
+//                    Log.d("TAG", "onCreate: ");
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+   }
 
     public class CustomComparator implements Comparator<Schedule> {
 
