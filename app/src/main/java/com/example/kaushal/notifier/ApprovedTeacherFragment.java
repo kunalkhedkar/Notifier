@@ -1,19 +1,18 @@
 package com.example.kaushal.notifier;
 
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,17 +23,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ScheduleRequestFragment extends Fragment {
+public class ApprovedTeacherFragment extends Fragment {
 
     View view;
-    DatabaseReference SCHEDULE_REFERENCE;
+    DatabaseReference TEACHER_REFERENCE;
     RecyclerView.Adapter adapter;
     ProgressBar progressBar;
+    private ArrayList<Teacher> TeacherList;
 
-    public ScheduleRequestFragment() {
+    public ApprovedTeacherFragment() {
         // Required empty public constructor
     }
 
@@ -42,32 +39,33 @@ public class ScheduleRequestFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_shedule_request, container, false);
-        SCHEDULE_REFERENCE= FirebaseDatabase.getInstance().getReference("schedule");
+
+        view= inflater.inflate(R.layout.fragment_approved_teacher, container, false);
+
+        progressBar=(ProgressBar) view.findViewById(R.id.ProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
+        TEACHER_REFERENCE= FirebaseDatabase.getInstance().getReference("teacher");
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
 //        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Schedule Request");
-         progressBar=(ProgressBar) view.findViewById(R.id.ProgressBar);
-        progressBar.setVisibility(View.VISIBLE);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Student");
+
         initViews();
 
         return view;
     }
 
-    private ArrayList<Schedule> scheduleObjectList;
 
     private void initViews(){
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.card_recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        scheduleObjectList = new ArrayList<>();
+        TeacherList=new ArrayList<>();
 
-        initScheduleList();
+        initTeacherList();
 
-        Log.d("TAG", "initViews: list size "+scheduleObjectList.size());
-        adapter = new ScheduleDataAdapter(scheduleObjectList,getActivity());
+
+        adapter = new ApprovedTeacherDataAdapter(TeacherList,getActivity());
         recyclerView.setAdapter(adapter);
 
         recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
@@ -84,7 +82,8 @@ public class ScheduleRequestFragment extends Fragment {
                 View child = rv.findChildViewUnder(e.getX(), e.getY());
                 if(child != null && gestureDetector.onTouchEvent(e)) {
                     int position = rv.getChildAdapterPosition(child);
-//                    Toast.makeText(getContext(),position, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), countries.get(position), Toast.LENGTH_SHORT).show();
+
                 }
 
                 return false;
@@ -104,18 +103,21 @@ public class ScheduleRequestFragment extends Fragment {
 
     }
 
-    private void initScheduleList() {
 
-        SCHEDULE_REFERENCE.addValueEventListener(new ValueEventListener() {
+    private void initTeacherList() {
+
+        TEACHER_REFERENCE.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                scheduleObjectList.clear();
+                TeacherList.clear();
                 for(DataSnapshot userDataSnapshot:dataSnapshot.getChildren()){
-                    Schedule schedule=userDataSnapshot.getValue(Schedule.class);
-                    scheduleObjectList.add(schedule);
+                    Teacher teacher=userDataSnapshot.getValue(Teacher.class);
+                    TeacherList.add(teacher);
                     adapter.notifyDataSetChanged();
+
                 }
                 progressBar.setVisibility(View.GONE);
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -124,5 +126,7 @@ public class ScheduleRequestFragment extends Fragment {
         });
 
     }
+
+
 
 }

@@ -24,6 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.ArrayList;
+
 public class RegisterActivity extends AppCompatActivity {
 
     DatabaseReference STUDENT_REFERENCE;
@@ -33,11 +35,12 @@ public class RegisterActivity extends AppCompatActivity {
     String tid;
 
 
-
-
     EditText Rname,Rusername,Rpassword,Rmobile,Radress,RroleNumber;
     Spinner Rclass,Rrole;
     ProgressBar progressBar;
+    private String username;
+    private boolean[] flag;
+    ArrayList<String> existUsername;
 
 
     @Override
@@ -45,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-
+        existUsername=new ArrayList<>();
 
         Rname= (EditText) findViewById(R.id.Rname);
         Rusername= (EditText) findViewById(R.id.Remail);
@@ -109,25 +112,23 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void registerOnClick(View view) {
 
-            //All value converted into string
+        //All value converted into string
         progressBar.setVisibility(View.VISIBLE);
-        String name=Rname.getText().toString();
-        final String username=Rusername.getText().toString();
-        String password=Rpassword.getText().toString();
-        String mobile=Rmobile.getText().toString();
-        String address=Radress.getText().toString();
-        String RollNumber=RroleNumber.getText().toString();
+        final String name = Rname.getText().toString();
+        username = Rusername.getText().toString();
+        final String password = Rpassword.getText().toString();
+        final String mobile = Rmobile.getText().toString();
+        final String address = Radress.getText().toString();
+        final String RollNumber = RroleNumber.getText().toString();
 
-        String classType=Rclass.getSelectedItem().toString();
-        String roleType=Rrole.getSelectedItem().toString();
+        final String classType = Rclass.getSelectedItem().toString();
+        final String roleType = Rrole.getSelectedItem().toString();
 
 
        /* if(name.isEmpty()){
             Rname.setError("can not be empty");
             return;
         }*/
-
-
 
 
 //        Role.equals("student");
@@ -163,75 +164,86 @@ public class RegisterActivity extends AppCompatActivity {
 //        }
 
 
-        if(name.isEmpty())
-        {
+        if (name.isEmpty()) {
             Rname.setError("Cant be empty");
             return;
         }
 
-        if(username.isEmpty())
-        {
+        if (username.isEmpty()) {
             Rusername.setError("Can't be empty");
             return;
         }
-        if(!username.contains("@"))
-        {
+        if (!username.contains("@")) {
             Rusername.setError("Not correct");
             return;
         }
 
-        if(password.isEmpty() )
-        {
+        if (password.isEmpty()) {
             Rpassword.setError("Cant be empty");
             return;
-         }
-        if(mobile.length()!=10 )
-        {
+        }
+        if (mobile.length() != 10) {
             Rmobile.setError("please enter valid number");
             return;
         }
 
-        if(mobile.isEmpty())
-        {
+        if (mobile.isEmpty()) {
             Rmobile.setError("Cant be empty");
             return;
         }
-        if(address.isEmpty()) {
+        if (address.isEmpty()) {
             Radress.setError("Cant be empty");
             return;
         }
 
+        // serching for existing
+        USER_REFERENCE.addListenerForSingleValueEvent(new ValueEventListener() {
 
-        if(roleType.equals("student")) {
+            boolean flag = false;
 
-            if(roleType.equals("select role")){
-                Toast.makeText(this, "please Select Role", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if(RollNumber.isEmpty())
-            {
-                RroleNumber.setError("Cant be empty");
-                return;
-            }
-            if(classType.equals("select class")){
-                Toast.makeText(this, "please Select class", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            final String ID = STUDENT_REFERENCE.push().getKey();
-            Log.d("TAG", "registerOnClick:" + ID);
-            Student s1 = new Student(ID, name, username, password, RollNumber, mobile, address, roleType, classType);
-            STUDENT_REFERENCE.child(ID).setValue(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Toast.makeText(RegisterActivity.this, "Register Sucessfully", Toast.LENGTH_SHORT).show();
-                    FirebaseMessaging.getInstance().subscribeToTopic(ID);
-                    //FirebaseMessaging.getInstance().subscribeToTopic("student");
-
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot usersDataSnapshot : dataSnapshot.getChildren()) {
+                    Users u1 = usersDataSnapshot.getValue(Users.class);
+                    if (username.equals(u1.getU_Username())) {
+                        flag = true;
+                        break;
+                    }
                 }
 
-            });
-            //read
+                if (!flag) {
+
+
+                    if(roleType.equals("student")) {
+
+                        if(roleType.equals("select role")){
+                            Toast.makeText(getApplicationContext(), "please Select Role", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if(RollNumber.isEmpty())
+                        {
+                            RroleNumber.setError("Cant be empty");
+                            return;
+                        }
+                        if(classType.equals("select class")){
+                            Toast.makeText(getApplicationContext(), "please Select class", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        final String ID = STUDENT_REFERENCE.push().getKey();
+                        Log.d("TAG", "registerOnClick:" + ID);
+                        Student s1 = new Student(ID, name, username, password, RollNumber, mobile, address, roleType, classType);
+                        STUDENT_REFERENCE.child(ID).setValue(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(RegisterActivity.this, "Register Sucessfully", Toast.LENGTH_SHORT).show();
+                                FirebaseMessaging.getInstance().subscribeToTopic(ID);
+                                //FirebaseMessaging.getInstance().subscribeToTopic("student");
+
+                            }
+
+                        });
+                        //read
 
 //            STUDENT_REFERENCE.addValueEventListener(new ValueEventListener() {
 //                @Override
@@ -252,10 +264,10 @@ public class RegisterActivity extends AppCompatActivity {
 //                }
 //            });
 //
-            acceptUser(ID,username,password,roleType,token);
-            //add to shared
-             SharedPreferences preferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
-               SharedPreferences.Editor editor = preferences.edit();
+                        acceptUser(ID,username,password,roleType,token);
+                        //add to shared
+                        SharedPreferences preferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
 //            editor.putString("id",ID);
 //            editor.putString("role",roleType);
 //            editor.putString("username",username);
@@ -266,11 +278,11 @@ public class RegisterActivity extends AppCompatActivity {
 //            Intent intent=new Intent(this,LoginActivity.class);
 //            startActivity(intent);
 
-            editor.putString("classType",classType);
-            editor.commit();
-            Log.d("TAG", "classType:"+classType );
-            progressBar.setVisibility(View.GONE);
-           }
+                        editor.putString("classType",classType);
+                        editor.commit();
+                        Log.d("TAG", "classType:"+classType );
+                        progressBar.setVisibility(View.GONE);
+                    }
         /*
         this.t_ID = t_ID;
         this.t_Name = t_Name;
@@ -283,46 +295,58 @@ public class RegisterActivity extends AppCompatActivity {
         */
                     // TEACHER
 
-        else{
+                    else{
 
 
-            final String t_ID=DUMMY_TEACHER_REFERENCE.push().getKey();
-            tid=t_ID;
-            Log.d("TAG", "registerOnClick:" + t_ID);
-            Teacher tt=new Teacher(t_ID,name,username,password,roleType,mobile,address);
-            final String title="New Teacher register";
-            final String msg=username+" has been newly register";
-            DUMMY_TEACHER_REFERENCE.child(t_ID).setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Toast.makeText(RegisterActivity.this, "Registration Sucessfully", Toast.LENGTH_SHORT).show();
-                    FirebaseMessaging.getInstance().subscribeToTopic(t_ID);
-                    CreateNotification createNotification=new CreateNotification(RegisterActivity.this);
-                    createNotification.sendNotificationTopic(title,msg,"head");
+                        final String t_ID=DUMMY_TEACHER_REFERENCE.push().getKey();
+                        tid=t_ID;
+                        Log.d("TAG", "registerOnClick:" + t_ID);
+                        Teacher tt=new Teacher(t_ID,name,username,password,roleType,mobile,address);
+                        final String title="New Teacher register";
+                        final String msg=username+" has been newly register";
+                        DUMMY_TEACHER_REFERENCE.child(t_ID).setValue(tt).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(RegisterActivity.this, "Registration Sucessfully", Toast.LENGTH_SHORT).show();
+                                FirebaseMessaging.getInstance().subscribeToTopic(t_ID);
+                                CreateNotification createNotification=new CreateNotification(RegisterActivity.this);
+                                createNotification.sendNotificationTopic(title,msg,"head");
+                            }
+                        });
+
+
+
+                    }
+
+                    //---------
+
+                    SharedPreferences preferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.remove("id");
+                    editor.remove("role");
+                    editor.remove("username");
+                    editor.remove("isLoggedIn");
+                    //editor.putString("name",name);
+                    editor.commit();
+
+                    Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
+                    intent.putExtra("tid",tid);
+                    startActivity(intent);
+                    progressBar.setVisibility(View.GONE);
+
                 }
-            });
+                else
+                    Toast.makeText(RegisterActivity.this, "Username already taken, please try with another email", Toast.LENGTH_LONG).show();
 
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-        }
-
-        SharedPreferences preferences = getSharedPreferences(MyConstant.SHARED_FILE, MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.remove("id");
-        editor.remove("role");
-        editor.remove("username");
-        editor.remove("isLoggedIn");
-        //editor.putString("name",name);
-        editor.commit();
-
-        Intent intent=new Intent(this,LoginActivity.class);
-        intent.putExtra("tid",tid);
-        startActivity(intent);
-        progressBar.setVisibility(View.GONE);
-
+            }
+        });
 
     }
-
 
     public void acceptUser(String u_ID,String username,String password,String role,String token){
         String ID=USER_REFERENCE.push().getKey();
@@ -360,13 +384,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
-// spinner listener -----  https://stackoverflow.com/questions/1337424/android-spinner-get-the-selected-item-change-event
+    // spinner listener -----  https://stackoverflow.com/questions/1337424/android-spinner-get-the-selected-item-change-event
     // how visible roll number.... RrollNumber.setVisbility(View.VISIBLE)
 
     // add another spinner for edu_type- bcs msc

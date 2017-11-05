@@ -6,6 +6,9 @@ package com.example.kaushal.notifier;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,9 +32,11 @@ import java.util.ArrayList;
 public class ScheduleDataAdapter extends RecyclerView.Adapter<ScheduleDataAdapter.ViewHolder> {
     private ArrayList<Schedule> scheduleList;
     View view;
+    Context context;
 
-    public ScheduleDataAdapter(ArrayList<Schedule> scheduleList) {
+    public ScheduleDataAdapter(ArrayList<Schedule> scheduleList, Context context) {
         this.scheduleList = scheduleList;
+        this.context=context;
     }
 
     @Override
@@ -58,11 +63,32 @@ public class ScheduleDataAdapter extends RecyclerView.Adapter<ScheduleDataAdapte
             @Override
             public void onClick(View view) {
 
-                if(!scheduleList.isEmpty()) {
-                    approvedSchedule(i);
-                }else {
-                    Toast.makeText(view.getContext(), "empty", Toast.LENGTH_SHORT).show();
-                }
+                DialogInterface.OnClickListener dialogClickListener=new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface,int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                if(!scheduleList.isEmpty()) {
+                                    approvedSchedule(i);
+                                }
+                                break;
+
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+
+                        }
+
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Do you Want To Accept This Schedule ").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("no", dialogClickListener).show();
+
+
+
             }
         });
     }
@@ -88,7 +114,7 @@ public class ScheduleDataAdapter extends RecyclerView.Adapter<ScheduleDataAdapte
         saveScheduleRef.child(s_ID).setValue(schedule).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(view.getContext(), "Done", Toast.LENGTH_SHORT).show();
+
                 CreateNotification createNotification=new CreateNotification(view.getContext());
                 createNotification.sendNotificationTopic("New schedule has been post",smsg,schedule.getClassType());
                 Log.d("sch", "onComplete: "+schedule.getClassType());
@@ -102,8 +128,7 @@ public class ScheduleDataAdapter extends RecyclerView.Adapter<ScheduleDataAdapte
                             if(teacher.getT_Username().equals(teacherUsername)){
                                 CreateNotification createNotification=new CreateNotification(view.getContext());
                                 createNotification.sendNotificationTopic("Approved schedule",tmsg,"teacher");
-//                                createNotification.sendNotificationTopic("Approved schedule",tmsg,teacher.getT_Username());
-                                Toast.makeText(view.getContext(), "teacher send", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Approved Successfully", Toast.LENGTH_SHORT).show();
                                 notifyItemRemoved(i);
                                 break;
                             }

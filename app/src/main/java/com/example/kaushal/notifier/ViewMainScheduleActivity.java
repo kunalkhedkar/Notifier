@@ -104,8 +104,8 @@ public class ViewMainScheduleActivity extends AppCompatActivity {
 //                    Log.d("TAG", "onDataChange: "+schedule.getT_name()+"\n"+schedule.getSub_name()+"\n"+schedule.getMarks()+"\n"+schedule.getDescription()+"\n"+schedule.getS_date()+"\n"+schedule.getS_time()+"\n"+schedule.getClassType()+""+schedule.getSubjectType());
 //                    adapter.notifyDataSetChanged();
 //                }
-////                Collections.reverse(listData);
-//                Collections.sort(listDataSchedule, new CustomComparator());
+//                Collections.reverse(listData);
+                Collections.sort(listDataSchedule, new CustomComparator());
 //                listData.clear();
 //                for(Schedule schedule:listDataSchedule){
 //                    dbClassType=schedule.getClassType();

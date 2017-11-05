@@ -1,10 +1,14 @@
 package com.example.kaushal.notifier;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -42,15 +46,6 @@ public class StudentNaviActivity extends AppCompatActivity
         String student_role=preferences.getString("role",null);
         Log.d("TAG", "onCreate:"+student_username+"\n"+student_role);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -66,6 +61,13 @@ public class StudentNaviActivity extends AppCompatActivity
         s_role.setText(student_role);
 
 
+        //default
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container,new HomeStudentFragment());
+        fragmentTransaction.commit();
+
+
     }
 
     @Override
@@ -74,7 +76,30 @@ public class StudentNaviActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-//            super.onBackPressed();
+
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int which) {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            moveTaskToBack(true);
+                            System.exit(0);
+                            break;
+
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //No button clicked
+                            break;
+                    }
+
+                }
+            };
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(StudentNaviActivity.this);
+            builder.setMessage("Do you want to exist").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+
         }
     }
 
@@ -128,6 +153,7 @@ public class StudentNaviActivity extends AppCompatActivity
             editor.commit();
             UnSubscribeTopic.unSubscribe(StudentNaviActivity.this);
             Intent loginIntent = new Intent(this, LoginActivity.class);
+            loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(loginIntent);
         }
 
@@ -162,18 +188,49 @@ public class StudentNaviActivity extends AppCompatActivity
     }
 
     public void viewMainSchedule(MenuItem item) {
-        Intent intent=new Intent(StudentNaviActivity.this,ViewMainScheduleActivity.class);
-        startActivity(intent);
+//        Intent intent=new Intent(StudentNaviActivity.this,ViewMainScheduleActivity.class);
+//        startActivity(intent);
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container,new ViewStudentMyScheduleFragment());
+        fragmentTransaction.commit();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
 
     }
 
     public void student_profile(MenuItem item) {
-        Intent intent=new Intent(StudentNaviActivity.this,ChangePassword.class);
-        startActivity(intent);
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container,new ChangPasswordFragment());
+        fragmentTransaction.commit();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
+//        Intent intent=new Intent(StudentNaviActivity.this,ChangePassword.class);
+//        startActivity(intent);
     }
 
     public void sendQueryReports(MenuItem item) {
-        Intent intent=new Intent(StudentNaviActivity.this,SendQueryReportActivity.class);
-        startActivity(intent);
+
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container,new CreateQueryReportFragment());
+        fragmentTransaction.commit();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+//        Intent intent=new Intent(StudentNaviActivity.this,SendQueryReportActivity.class);
+//        startActivity(intent);
+    }
+
+    public void home(MenuItem item) {
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container,new HomeStudentFragment());
+        fragmentTransaction.commit();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
     }
 }

@@ -1,5 +1,7 @@
 package com.example.kaushal.notifier;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -44,16 +46,6 @@ public class HeadNaviActivity extends AppCompatActivity
 //            h_username.setText(head_username);
 //            h_role.setText(head_role);
 
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -70,15 +62,43 @@ public class HeadNaviActivity extends AppCompatActivity
         h_role.setText(head_role    );
     }
 
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-//            super.onBackPressed();
+
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int which) {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            moveTaskToBack(true);
+                            System.exit(0);
+                            break;
+
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //No button clicked
+                            break;
+                    }
+
+                }
+            };
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(HeadNaviActivity.this);
+            builder.setMessage("Do you want to exist").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+
         }
     }
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -133,9 +153,13 @@ public class HeadNaviActivity extends AppCompatActivity
     }
 
     public void viewTeacher(MenuItem item) {
-        Intent intent=new Intent(HeadNaviActivity.this,ViewTeacherActivity.class);
-        startActivity(intent);
-        finish();
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container,new ApprovedTeacherFragment());
+        fragmentTransaction.commit();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
     }
 
     public void logout(MenuItem item) {
@@ -159,14 +183,31 @@ public class HeadNaviActivity extends AppCompatActivity
 //        startActivity(intent);
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.container,new ScheduleRequestFragment());
+        fragmentTransaction.replace(R.id.container,new ScheduleRequestFragment());
         fragmentTransaction.commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
     }
 
     public void showProfile(MenuItem item) {
-        Intent intent=new Intent(HeadNaviActivity.this,HeadProfileActivity.class);
-        startActivity(intent);
+//        Intent intent=new Intent(HeadNaviActivity.this,HeadProfileActivity.class);
+//        startActivity(intent);
+
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container,new HeadProfileFragment());
+        fragmentTransaction.commit();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
+    }
+
+    public void scheduleReport(MenuItem item) {
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container,new ViewAllScheduleFragment());
+        fragmentTransaction.commit();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
     }
 }

@@ -19,7 +19,14 @@
             android:title="Pending shedule request"
             android:onClick="schedule_request"/>
 
-         <item android:onClick="logout"
+        <item
+            android:id="@+id/nav_view_schedule_report"
+            android:icon="@drawable/report"
+            android:title="View Schedule Report"
+            android:onClick="scheduleReport"/>
+
+
+        <item android:onClick="logout"
              android:id="@+id/logout"
             android:icon="@drawable/ic_power_settings_new_black_24dp"
             android:title="Logout" />

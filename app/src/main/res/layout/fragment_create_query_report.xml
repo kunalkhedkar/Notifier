@@ -1,0 +1,58 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="55dp"
+    tools:context="com.example.kaushal.notifier.CreateQueryReportFragment">
+
+  <RelativeLayout
+      android:padding="30dp"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <Spinner
+          android:layout_centerHorizontal="true"
+          android:layout_marginTop="20dp"
+          android:gravity="center"
+          android:id="@+id/TeacherUsername"
+          android:layout_width="250dp"
+          android:layout_height="40dp" />
+      <EditText
+          android:layout_marginTop="20dp"
+          android:gravity="center"
+          android:hint="Student Name"
+          android:id="@+id/studentName"
+          android:layout_below="@id/TeacherUsername"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content" />
+      <EditText
+          android:layout_marginTop="20dp"
+          android:id="@+id/student_class"
+          android:hint="Class"
+          android:gravity="center"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/studentName"/>
+      <EditText
+          android:layout_marginTop="20dp"
+          android:id="@+id/absentyReport"
+          android:lines="2"
+          android:maxLength="200"
+          android:singleLine="false"
+          android:layout_width="match_parent"
+          android:gravity="center_horizontal"
+          android:layout_below="@id/student_class"
+          android:hint="Absentee Report"
+          android:layout_height="120dp"/>
+      <Button
+          android:layout_marginTop="20dp"
+          android:background="@drawable/button_color"
+          android:text="Submit"
+          android:textColor="#ffffff"
+          android:id="@+id/submitReport"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/absentyReport"
+          android:layout_centerInParent="true"/>
+
+  </RelativeLayout>
+</FrameLayout>

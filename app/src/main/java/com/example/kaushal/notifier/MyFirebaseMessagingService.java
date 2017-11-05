@@ -5,6 +5,7 @@ package com.example.kaushal.notifier;
  */
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
@@ -66,7 +67,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "handleIntent: "+title+"\n"+msg);
 
 
+
         NotificationCompat.Builder b = new NotificationCompat.Builder(this.getApplicationContext());
+
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, SplashActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
         b.setAutoCancel(true)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
@@ -74,7 +80,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setTicker("{your tiny message}")
                 .setContentTitle(title)
                 .setContentText(msg)
-                .setContentInfo("INFO");
+                .setContentInfo("INFO")
+                .setContentIntent(contentIntent);
+
 
         NotificationManager nm = (NotificationManager) this.getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(1, b.build());

@@ -73,6 +73,20 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "back", Toast.LENGTH_SHORT).show();
+        finish();
+//        super.onBackPressed();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Login.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+    }
+
     public void Register(View view) {
 
         Intent intent = new Intent(this, RegisterActivity.class);
@@ -126,6 +140,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intent = new Intent(LoginActivity.this, StudentNaviActivity.class);
                                 startActivity(intent);
                                 progressBar.setVisibility(View.GONE);
+                                finish();
                                 break;
                             } else if (role.equalsIgnoreCase("teacher")) {
                                 editor.putBoolean("isLoggedIn", true);
@@ -145,6 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intent = new Intent(LoginActivity.this, TeacherNaviActivity.class);
                                 startActivity(intent);
                                 progressBar.setVisibility(View.GONE);
+                                finish();
                                 break;
 
                             } else if (role.equalsIgnoreCase("head")) {
@@ -161,6 +177,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 Intent intent = new Intent(LoginActivity.this, HeadNaviActivity.class);
                                 startActivity(intent);
+                                finish();
                                 break;
 
                             }
@@ -191,8 +208,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
         }
-        else
-            user.setError("please Check Username or Password");
+        else{
+            user.setError("Field can not be empty");
+            Login.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+        }
+
+
 
 
     }
