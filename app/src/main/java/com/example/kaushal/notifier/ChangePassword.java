@@ -58,6 +58,7 @@ public class ChangePassword extends AppCompatActivity {
                     Ref.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            Boolean flag=false;
                             //Log.d("TAG", "onDataChange:"+old);
                             for (DataSnapshot userDataSnapShot : dataSnapshot.getChildren()) {
                                 Users u = userDataSnapShot.getValue(Users.class);
@@ -65,18 +66,21 @@ public class ChangePassword extends AppCompatActivity {
                                     sample = u.getU_Password();
                                     u.setU_Password(new1);
                                     String id = userDataSnapShot.getKey();
+                                    flag=true;
                                     Ref.child(id).setValue(u).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             Toast.makeText(ChangePassword.this, "Successfully changed password", Toast.LENGTH_SHORT).show();
+
                                         }
                                     });
                                     break;
-                                }else
-                                    oldPassword.setError("old password not correct");
+                                }
+
 
                             }
-
+                            if(!flag)
+                            oldPassword.setError("old password not correct");
 
                         }
 

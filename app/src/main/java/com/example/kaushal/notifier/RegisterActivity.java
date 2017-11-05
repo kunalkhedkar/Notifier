@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     EditText Rname,Rusername,Rpassword,Rmobile,Radress,RroleNumber;
     Spinner Rclass,Rrole;
+    ProgressBar progressBar;
 
 
     @Override
@@ -53,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
         RroleNumber= (EditText) findViewById(R.id.RroleNumber);
         Rclass= (Spinner) findViewById(R.id.Rclass);
         Rrole= (Spinner) findViewById(R.id.Rrole);
-
+        progressBar= (ProgressBar) findViewById(R.id.ProgressBar);
         // role and class spinner
         String classs[]=getResources().getStringArray(R.array.class_types);
         final String role[]=getResources().getStringArray(R.array.role_types);
@@ -108,7 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
     public void registerOnClick(View view) {
 
             //All value converted into string
-
+        progressBar.setVisibility(View.VISIBLE);
         String name=Rname.getText().toString();
         final String username=Rusername.getText().toString();
         String password=Rpassword.getText().toString();
@@ -267,7 +269,8 @@ public class RegisterActivity extends AppCompatActivity {
             editor.putString("classType",classType);
             editor.commit();
             Log.d("TAG", "classType:"+classType );
-        }
+            progressBar.setVisibility(View.GONE);
+           }
         /*
         this.t_ID = t_ID;
         this.t_Name = t_Name;
@@ -315,6 +318,7 @@ public class RegisterActivity extends AppCompatActivity {
         Intent intent=new Intent(this,LoginActivity.class);
         intent.putExtra("tid",tid);
         startActivity(intent);
+        progressBar.setVisibility(View.GONE);
 
 
     }

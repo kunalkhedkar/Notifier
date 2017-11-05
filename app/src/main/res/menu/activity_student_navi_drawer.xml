@@ -13,6 +13,7 @@
             android:icon="@drawable/ic_visibility_black_24dp"
             android:title="View Schedule" />
         <item
+            android:onClick="sendQueryReports"
             android:id="@+id/nav_query"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Send Query Report" />

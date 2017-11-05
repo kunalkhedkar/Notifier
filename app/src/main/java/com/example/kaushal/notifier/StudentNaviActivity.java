@@ -171,4 +171,9 @@ public class StudentNaviActivity extends AppCompatActivity
         Intent intent=new Intent(StudentNaviActivity.this,ChangePassword.class);
         startActivity(intent);
     }
+
+    public void sendQueryReports(MenuItem item) {
+        Intent intent=new Intent(StudentNaviActivity.this,SendQueryReportActivity.class);
+        startActivity(intent);
+    }
 }

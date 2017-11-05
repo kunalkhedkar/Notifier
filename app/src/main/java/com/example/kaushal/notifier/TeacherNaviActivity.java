@@ -167,7 +167,7 @@ public class TeacherNaviActivity extends AppCompatActivity
     }
 
     public void teacherAllSchedule(MenuItem item) {
-        Intent in=new Intent(TeacherNaviActivity.this,ViewMainScheduleActivity.class);
+        Intent in=new Intent(TeacherNaviActivity.this,ViewallScheduletoTeacherActivity.class);
         startActivity(in);
 
     }
@@ -175,6 +175,12 @@ public class TeacherNaviActivity extends AppCompatActivity
     public void teacher_profile(MenuItem item) {
         Intent intent=new Intent(TeacherNaviActivity.this,ChangePassword.class);
         startActivity(intent);
+    }
+
+    public void ViewQueryReport(MenuItem item) {
+        Intent intent=new Intent(TeacherNaviActivity.this,ViewQueryReportActivity.class);
+        startActivity(intent);
+
     }
 //    public void setTeacherName()
 //    {

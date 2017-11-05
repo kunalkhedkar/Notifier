@@ -97,7 +97,12 @@ public class HeadProfileActivity extends AppCompatActivity {
 
 //        String h_ID = HEAD_REF.push().getKey();
         Head h1=new Head(headUsername,fullName,headInstituteName);
-        HEAD_REF.child(ID).setValue(h1);
+        HEAD_REF.child(ID).setValue(h1).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(HeadProfileActivity.this, "Profile saved successfully", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         final String newUsername=username.getText().toString();
         if(!newUsername.equals(sharedusername)){

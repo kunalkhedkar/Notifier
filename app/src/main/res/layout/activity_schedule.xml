@@ -36,6 +36,7 @@
         android:layout_below="@id/subjectName"
         android:layout_marginTop="10dp"
         android:hint="Marks"
+        android:inputType="number"
         android:gravity="center"
         android:textColorHint="@color/colorPrimaryDark"
         android:layout_width="match_parent"

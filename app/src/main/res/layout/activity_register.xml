@@ -132,7 +132,16 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/RroleNumber"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="70dp" />
+                android:layout_marginTop="70dp"/>
+        <ProgressBar
+            android:id="@+id/ProgressBar"
+            android:visibility="gone"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-</RelativeLayout>
+
+    </RelativeLayout>
 </ScrollView>
