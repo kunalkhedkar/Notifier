@@ -62,7 +62,7 @@ public class CreateNotification {
 
     public void sendNotificationTopic(String title,String msg,String topic) {
 
-        final String Legacy_SERVER_KEY = "AIzaSyCLr0cByef2ehP1pG0Hybs6p7zcrwmoiFY";
+        final String Legacy_SERVER_KEY = "YOUR LEGACY KEY";
 //        String msg = "Hello asus,.,,.,.";
 //        String title = "kunal my title ASUS";
 //        String token = FCM_RECEIVER_TOKEN;
