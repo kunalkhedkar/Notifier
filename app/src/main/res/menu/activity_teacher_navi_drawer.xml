@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:onClick="home"
+            android:id="@+id/home"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+        <item
+            android:onClick="teacher_profile"
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="Profile" />
+        <item
+            android:onClick="displayMySchedule"
+            android:id="@+id/nav_my_schedule"
+            android:icon="@drawable/ic_event_available_black_24dp"
+            android:title="My Schedule" />
+        <item
+            android:onClick="teacherAllSchedule"
+            android:id="@+id/nav_all_schedule"
+            android:icon="@drawable/ic_library_books_black_24dp"
+            android:title="All schedule" />
+
+        <item
+            android:onClick="viewStudent"
+            android:id="@+id/nav_view_Student"
+            android:icon="@drawable/ic_visibility_black_24dp"
+            android:title="View Student" />
+
+        <item
+            android:onClick="createSchedule"
+            android:id="@+id/nav_createSchedule"
+            android:icon="@drawable/ic_event_note_black_24dp"
+            android:title="Add Schedule" />
+
+
+        <item
+            android:icon="@drawable/ic_visibility_black_24dp"
+            android:onClick="ViewQueryReport"
+            android:id="@+id/viewQueryReport"
+            android:title="View Query Report" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_power_settings_new_black_24dp"
+            android:title="Logout" />
+
+
+
+
+
+
+
+
+
+    </group>
+
+</menu>

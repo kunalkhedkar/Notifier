@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single"> <item
+        android:onClick="home"
+        android:id="@+id/home"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
+
+        <item
+            android:onClick="student_profile"
+            android:id="@+id/nav_profile_student"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="Profile" />
+        <item
+            android:onClick="viewMainSchedule"
+            android:id="@+id/nav_view_schedule_student"
+            android:icon="@drawable/ic_visibility_black_24dp"
+            android:title="View Schedule" />
+        <item
+            android:onClick="sendQueryReports"
+            android:id="@+id/nav_query"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Send Query Report" />
+        <item
+            android:id="@+id/nav_logout_student"
+            android:icon="@drawable/ic_power_settings_new_black_24dp"
+            android:title="Logout" />
+    </group>
+
+</menu>

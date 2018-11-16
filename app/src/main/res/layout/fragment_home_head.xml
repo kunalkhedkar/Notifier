@@ -1,0 +1,166 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="100dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    tools:context="com.example.kaushal.notifier.HomeHeadFragment">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/row1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/profileBlock"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_marginRight="7dp"
+                android:layout_weight="1"
+                android:background="#66A5AD">
+
+                <ImageView
+                    android:id="@+id/boy"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/mainboy" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/boy"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="serif"
+                    android:text="Profile"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/scheduleRequestBlock"
+                android:layout_marginLeft="7dp"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_toRightOf="@id/profileBlock"
+                android:layout_weight="1.7"
+                android:background="#ACD0C0">
+
+                <ImageView
+                    android:id="@+id/schduleRequest"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/mail"
+                    />
+                <TextView
+                    android:fontFamily="serif"
+                    android:layout_width="wrap_content"
+                    android:text="Schedule Request"
+                    android:textStyle="bold"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:layout_marginTop="7dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/schduleRequest"
+                    android:layout_height="wrap_content" />
+
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/row2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/row1"
+            android:layout_marginTop="15dp">
+
+
+            <RelativeLayout
+                android:id="@+id/scheduleReportBlock"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_marginRight="7dp"
+                android:layout_weight="1"
+                android:background="#756867">
+
+                <ImageView
+                    android:id="@+id/scheduleReport"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/report1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/scheduleReport"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="serif"
+                    android:text="Report"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/accounrRequestBlock"
+                android:layout_marginLeft="7dp"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_toRightOf="@id/profileBlock"
+                android:layout_weight="1.7"
+                android:background="#BF9A77">
+
+                <ImageView
+                    android:id="@+id/accountRequest"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/account"
+                    />
+                <TextView
+                    android:fontFamily="serif"
+                    android:layout_width="wrap_content"
+                    android:text="Account Request"
+                    android:textStyle="bold"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:layout_marginTop="7dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/accountRequest"
+                    android:layout_height="wrap_content" />
+
+
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</FrameLayout>

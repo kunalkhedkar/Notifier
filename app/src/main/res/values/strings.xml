@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Scheduler</string>
+    <string name="title_activity_teacher_navi">TeacherNaviActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_student_navi">StudentNaviActivity</string>
+
+
+    <string-array name="class_types">
+        <item>select_class</item>
+        <item>FYBCS</item>
+        <item>SYBCS</item>
+        <item>TYBCS</item>
+        <item>MCS_Part_1</item>
+        <item>MCS_Part_2</item>
+    </string-array>
+
+    <string-array name="role_types">
+        <item>select role</item>
+        <item>student</item>
+        <item>teacher</item>
+    </string-array>
+
+    <string-array name="test_type">
+        <item>Type of test</item>
+        <item>subjective</item>
+        <item>objective</item>
+        <item>assignment</item>
+        <item>case study</item>
+        <item>programming</item>
+    </string-array>
+
+
+    <string name="title_activity_head_navi">HeadNaviActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

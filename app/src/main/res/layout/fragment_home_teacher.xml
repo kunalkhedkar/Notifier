@@ -1,0 +1,166 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="100dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    tools:context="com.example.kaushal.notifier.HomeTeacherFragment">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/row1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/profileBlock"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_marginRight="7dp"
+                android:layout_weight="1"
+                android:background="#66A5AD">
+
+                <ImageView
+                    android:id="@+id/boy"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/mainboy" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/boy"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="serif"
+                    android:text="Profile"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/MyscheduleBlock"
+                android:layout_marginLeft="7dp"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_toRightOf="@id/profileBlock"
+                android:layout_weight="1"
+                android:background="#AEBD38">
+
+                <ImageView
+                    android:id="@+id/Myschdule"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/calendar"
+                    />
+                <TextView
+                    android:fontFamily="serif"
+                    android:layout_width="wrap_content"
+                    android:text="My Schedule"
+                    android:textStyle="bold"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:layout_marginTop="7dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/Myschdule"
+                    android:layout_height="wrap_content" />
+
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/row2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/row1"
+            android:layout_marginTop="15dp">
+
+
+            <RelativeLayout
+                android:id="@+id/addScheduleBlock"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_marginRight="7dp"
+                android:layout_weight="1"
+                android:background="#756867">
+
+                <ImageView
+                    android:id="@+id/postSchedule"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/addschedule" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/postSchedule"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="serif"
+                    android:text="Add Schedule"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/ViewStudentBlock"
+                android:layout_marginLeft="7dp"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_toRightOf="@id/profileBlock"
+                android:layout_weight="1"
+                android:background="#BF9A77">
+
+                <ImageView
+                    android:id="@+id/Viewschdule"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/search"
+                    />
+                <TextView
+                    android:fontFamily="serif"
+                    android:layout_width="wrap_content"
+                    android:text="Student List"
+                    android:textStyle="bold"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:layout_marginTop="7dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/Viewschdule"
+                    android:layout_height="wrap_content" />
+
+
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</FrameLayout>
